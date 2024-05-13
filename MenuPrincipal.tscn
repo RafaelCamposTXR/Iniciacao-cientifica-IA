@@ -1,0 +1,25 @@
+[gd_scene load_steps=2 format=3 uid="uid://bimw8e37f2a88"]
+
+[ext_resource type="Script" path="res://menu.gd" id="1_bmj6w"]
+
+[node name="Node3D" type="Node3D"]
+script = ExtResource("1_bmj6w")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+
+[node name="ACESSAR" type="Button" parent="."]
+offset_left = 370.0
+offset_top = 261.0
+offset_right = 789.0
+offset_bottom = 346.0
+text = "ACESSAR"
+
+[node name="SAIR" type="Button" parent="."]
+offset_left = 367.0
+offset_top = 374.0
+offset_right = 791.0
+offset_bottom = 459.0
+text = "SAIR"
+
+[connection signal="button_down" from="ACESSAR" to="." method="_on_jogar_button_down"]
+[connection signal="button_down" from="SAIR" to="." method="_on_sair_button_down"]

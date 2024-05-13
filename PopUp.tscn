@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://cwji0hkh4bwe3"]
+
+[node name="HoverInput" type="Node2D"]
+
+[node name="Panel" type="Panel" parent="."]
+offset_left = 397.0
+offset_top = 150.0
+offset_right = 693.0
+offset_bottom = 342.0

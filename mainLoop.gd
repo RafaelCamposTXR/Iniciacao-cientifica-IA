@@ -5,6 +5,7 @@ var NovaTB = preload("res://PopUp.tscn")
 var NovaCapsula = preload("res://Neuronio.tscn")
 var instanciasHover = []
 var instanciasCapsula = []
+var neuronio
 var qtdHOVER = 0
 var qtdCAP = 0
 var x = -10
@@ -25,9 +26,14 @@ func instanciarHover(pos):
 	qtdHOVER += 1
 	
 func instanciarCapsula(pos):
-	instanciasCapsula.append(NovaCapsula.instantiate())
-	instanciasCapsula[qtdCAP].position = pos
+	var B = NovaCapsula.duplicate()
+	print(NovaCapsula)
+	print(B)
+	instanciasCapsula.append(B.instantiate())
+	neuronio = instanciasCapsula[qtdCAP].get_node("CAPSULAINSTANCIA")
 	add_child(instanciasCapsula[qtdCAP])
+	instanciasCapsula[qtdCAP].position = pos
+	pos.x += 1
 	qtdCAP += 1
 
 func _on_button_0_button_down():
@@ -36,6 +42,7 @@ func _on_button_0_button_down():
 
 func _on_rigid_body_3d_mouse_entered():
 	instanciarHover(Vector2(-1,0))
+
 
 
 func _on_rigid_body_3d_mouse_exited():

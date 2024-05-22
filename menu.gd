@@ -14,6 +14,7 @@ func _on_button_button_down():
 
 func _on_text_edit_focus_entered():
 	get_tree().quit()
+	pass
 
 
 func _on_jogar_button_down():

@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://wwhpht57hb47"]
+[gd_scene load_steps=7 format=3 uid="uid://wwhpht57hb47"]
 
 [ext_resource type="Script" path="res://mainLoop.gd" id="1_3oew7"]
 [ext_resource type="Script" path="res://texto.gd" id="2_mtfqe"]
@@ -11,13 +11,6 @@ background_color = Color(0.27451, 0.407843, 0.505882, 1)
 [sub_resource type="CameraAttributesPhysical" id="CameraAttributesPhysical_jgex3"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_r1prp"]
-
-[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_4u80q"]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_1ilfp"]
-size = Vector3(0.104736, 0.0995025, 0.0910646)
-
-[sub_resource type="BoxMesh" id="BoxMesh_yj5jk"]
 
 [node name="Node3D" type="Node3D"]
 script = ExtResource("1_3oew7")
@@ -33,19 +26,6 @@ transform = Transform3D(100, 0, 0, 0, 100, 0, 0, 0, 100, -0.0265163, 0, 0)
 shape = SubResource("BoxShape3D_r1prp")
 disabled = true
 
-[node name="CUBO" type="RigidBody3D" parent="Area3D"]
-transform = Transform3D(0.939202, 0.0973139, 0.329286, 0, 0.958998, -0.283413, -0.343365, 0.266182, 0.900693, -0.0959089, 0.513254, -4.94674)
-physics_material_override = SubResource("PhysicsMaterial_4u80q")
-gravity_scale = 0.0
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D/CUBO"]
-transform = Transform3D(9.99994, 1.19209e-07, -3.8147e-06, -2.16365e-05, 9.99994, 3.8147e-06, 2.90871e-05, -1.19209e-06, 10, 0.0158684, -0.0201617, -0.0439425)
-shape = SubResource("BoxShape3D_1ilfp")
-disabled = true
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Area3D/CUBO"]
-mesh = SubResource("BoxMesh_yj5jk")
-
 [node name="Camera3D" type="Camera3D" parent="."]
 
 [node name="Button0" type="Button" parent="."]
@@ -53,28 +33,20 @@ offset_left = 1028.0
 offset_top = 26.0
 offset_right = 1109.0
 offset_bottom = 82.0
-text = "SAIR"
+text = "VOLTAR"
 
 [node name="GerarCapsula" type="Button" parent="."]
-offset_left = 26.0
-offset_top = 422.0
-offset_right = 221.0
-offset_bottom = 507.0
-text = "GERAR CAPSULA"
-
-[node name="RemoverCapsula" type="Button" parent="."]
-offset_left = 250.0
-offset_top = 422.0
-offset_right = 445.0
-offset_bottom = 507.0
-keep_pressed_outside = true
-text = "REMOVER CAPSULA"
+offset_left = 718.0
+offset_top = 544.0
+offset_right = 913.0
+offset_bottom = 593.0
+text = "Gerar Neuronio Teste"
 
 [node name="InputRede" type="TextEdit" parent="."]
-offset_left = 22.0
-offset_top = 518.0
-offset_right = 450.0
-offset_bottom = 621.0
+offset_left = 927.0
+offset_top = 543.0
+offset_right = 1120.0
+offset_bottom = 591.0
 script = ExtResource("2_mtfqe")
 
 [node name="LabelRede" type="RichTextLabel" parent="."]
@@ -84,12 +56,10 @@ offset_right = 700.0
 offset_bottom = 268.0
 script = ExtResource("3_6x42u")
 
-[connection signal="mouse_entered" from="Area3D/CUBO" to="." method="_on_rigid_body_3d_2_mouse_entered"]
 [connection signal="button_down" from="Button0" to="." method="_on_button_0_button_down"]
 [connection signal="button_down" from="GerarCapsula" to="." method="_on_button_1_button_down"]
 [connection signal="button_down" from="GerarCapsula" to="InputRede" method="_on_gerar_capsula_button_down"]
 [connection signal="button_down" from="GerarCapsula" to="LabelRede" method="_on_gerar_capsula_button_down"]
-[connection signal="button_down" from="RemoverCapsula" to="." method="_on_remover_capsula_button_down"]
 [connection signal="caret_changed" from="InputRede" to="." method="_on_text_edit_caret_changed"]
 [connection signal="gutter_added" from="InputRede" to="." method="_on_text_edit_gutter_added"]
 [connection signal="gutter_clicked" from="InputRede" to="." method="_on_text_edit_gutter_clicked"]

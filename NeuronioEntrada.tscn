@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://4tedqsi4ypk7"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_qxm5n"]
+
+[sub_resource type="TubeTrailMesh" id="TubeTrailMesh_dqhqa"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="AreaColisao" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(0.837866, 0, 0, 0, 0.603295, 0, 0, 0, 0.837866, 0, 0, -4.00136)
+shape = SubResource("CapsuleShape3D_qxm5n")
+
+[node name="Neuronio" type="MeshInstance3D" parent="Area3D/AreaColisao"]
+transform = Transform3D(1, 0, 0, 0, 0.98407, 0, 0, 0, 1, 0, 0, -0.0124602)
+mesh = SubResource("TubeTrailMesh_dqhqa")

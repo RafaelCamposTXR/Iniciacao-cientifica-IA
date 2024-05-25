@@ -1,115 +1,59 @@
-[gd_scene load_steps=7 format=3 uid="uid://dbev8aao4byoh"]
+[gd_scene load_steps=5 format=3 uid="uid://yhqjnhdpx5ik"]
 
-[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_j003w"]
+[sub_resource type="GDScript" id="GDScript_f6mwv"]
+script/source = "extends Node3D
 
-[sub_resource type="GDScript" id="GDScript_oxt8j"]
-resource_local_to_scene = true
-script/source = "extends RigidBody3D
-
-
-var NovaTB = preload(\"res://PopUp.tscn\")
-var instanciasHover = []
-var qtdHOVER = 0
 var neuronio
-var material
-var capsula
-var default_color = null
-var other_color = Color.PINK
-var sucesso = 0
-
+var ativado
 
 func _ready():
-	capsula = get_parent().get_node(\"CAPSULAINSTANCIA/Neuronio\")
-	make_unique()
-	if sucesso == 1:
-		EscolheCor(1)
-		sucesso = 0
-	elif sucesso == 0:
-		EscolheCor(0)
-		sucesso = 1
-
-
-func make_unique():
-	material = capsula.mesh.material.duplicate()
-	default_color = material.albedo_color
-	capsula.set(\"material/0\", material)
+	neuronio = get_node(\"Area3D/AreaColisao/Neuronio\")
+	print(neuronio)
 
 
 func _process(delta):
 	pass
-	
-	
-func instanciarHover(pos):
-	instanciasHover.append( NovaTB.instantiate())
-	add_child(instanciasHover[qtdHOVER])
-	qtdHOVER += 1
 
 
-func _on_mouse_entered():
-		instanciarHover(Vector2(-1,0))
-		neuronio = get_parent().get_node(\"CAPSULAINSTANCIA/Neuronio\")
-		neuronio.mesh.material.albedo_color = Color(255 , 0, 0, 1)
-
-
-func _on_mouse_exited():
-	instanciasHover[qtdHOVER-1].queue_free()
-	
 func EscolheCor(cor):
+	var mat = neuronio.mesh.material
 	if cor == 0:
-		capsula.set(\"material/0\", Color(255,0,0,1))
+		mat.albedo_color = Color(255 , 0, 0, 1)
+		neuronio.mesh.surface_set_material(0, mat.duplicate())
 	else:
-		capsula.set(\"material/0\", Color(0,255,0,1))
+		mat.albedo_color = Color(0 , 255, 0, 1)
+		neuronio.mesh.surface_set_material(0, mat.duplicate())
+
+## Interação com o mouse ##
+func _on_area_3d_mouse_entered():
+	EscolheCor(0)
+
+func _on_area_3d_mouse_exited():
+	EscolheCor(1)
+#####
 "
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_i5wpr"]
-size = Vector3(1, 0.473877, 1)
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ev4id"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bdknh"]
-albedo_color = Color(0, 1, 0, 1)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3p5qa"]
+albedo_color = Color(1, 0.27451, 0.164706, 1)
 
-[sub_resource type="SphereMesh" id="SphereMesh_evxwd"]
-material = SubResource("StandardMaterial3D_bdknh")
-
-[sub_resource type="GDScript" id="GDScript_cfuff"]
-script/source = "extends MeshInstance3D
-
-
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
-
-
-func _on_rigid_body_3d_mouse_entered():
-	get_tree().quit()
-
-
-func _on_rigid_body_3d_input_event(camera, event, position, normal, shape_idx):
-	#get_tree().quit()
-	pass
-"
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_544g7"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_3p5qa")
 
 [node name="Node3D" type="Node3D"]
+script = SubResource("GDScript_f6mwv")
 
-[node name="CAPSULAINSTANCIA" type="RigidBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.86395, -1.16132, -4.82563)
-physics_material_override = SubResource("PhysicsMaterial_j003w")
-gravity_scale = 0.0
-script = SubResource("GDScript_oxt8j")
+[node name="Area3D" type="Area3D" parent="."]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="CAPSULAINSTANCIA"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.017642, 0.00400078, 0)
-shape = SubResource("BoxShape3D_i5wpr")
+[node name="AreaColisao" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(0.837866, 0, 0, 0, 0.603295, 0, 0, 0, 0.837866, 0, 0, -4.00136)
+shape = SubResource("CapsuleShape3D_ev4id")
 
-[node name="Neuronio" type="MeshInstance3D" parent="CAPSULAINSTANCIA"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0182145, 0, 0.0106659)
-gi_mode = 2
-mesh = SubResource("SphereMesh_evxwd")
-script = SubResource("GDScript_cfuff")
-metadata/_edit_lock_ = true
+[node name="Neuronio" type="MeshInstance3D" parent="Area3D/AreaColisao"]
+transform = Transform3D(1, 0, 0, 0, 0.98407, 0, 0, 0, 1, 0, 0, -0.0124602)
+mesh = SubResource("CapsuleMesh_544g7")
 
-[connection signal="input_event" from="CAPSULAINSTANCIA" to="CAPSULAINSTANCIA/Neuronio" method="_on_rigid_body_3d_input_event"]
-[connection signal="mouse_entered" from="CAPSULAINSTANCIA" to="CAPSULAINSTANCIA" method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="CAPSULAINSTANCIA" to="CAPSULAINSTANCIA" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="Area3D" to="." method="_on_area_3d_mouse_entered"]
+[connection signal="mouse_exited" from="Area3D" to="." method="_on_area_3d_mouse_exited"]

@@ -3,7 +3,8 @@
 [node name="HoverInput" type="Node2D"]
 
 [node name="Panel" type="Panel" parent="."]
-offset_left = 397.0
-offset_top = 150.0
-offset_right = 693.0
-offset_bottom = 342.0
+modulate = Color(1, 1, 1, 0.329412)
+offset_left = 435.0
+offset_top = 190.0
+offset_right = 731.0
+offset_bottom = 382.0

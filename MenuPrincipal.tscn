@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://bimw8e37f2a88"]
+[gd_scene load_steps=3 format=3 uid="uid://bimw8e37f2a88"]
 
 [ext_resource type="Script" path="res://menu.gd" id="1_bmj6w"]
+[ext_resource type="Script" path="res://texto.gd" id="2_x1shc"]
 
 [node name="Node3D" type="Node3D"]
 script = ExtResource("1_bmj6w")
@@ -10,7 +11,7 @@ script = ExtResource("1_bmj6w")
 [node name="ACESSAR" type="Button" parent="."]
 offset_left = 370.0
 offset_top = 261.0
-offset_right = 789.0
+offset_right = 514.0
 offset_bottom = 346.0
 text = "ACESSAR"
 
@@ -21,5 +22,13 @@ offset_right = 791.0
 offset_bottom = 459.0
 text = "SAIR"
 
+[node name="InputRede" type="TextEdit" parent="."]
+offset_left = 528.0
+offset_top = 261.0
+offset_right = 790.0
+offset_bottom = 346.0
+script = ExtResource("2_x1shc")
+
 [connection signal="button_down" from="ACESSAR" to="." method="_on_jogar_button_down"]
+[connection signal="button_down" from="ACESSAR" to="InputRede" method="_on_acessar_button_down"]
 [connection signal="button_down" from="SAIR" to="." method="_on_sair_button_down"]

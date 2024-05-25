@@ -24,3 +24,8 @@ func _on_jogar_button_down():
 func _on_sair_button_down():
 	get_tree().quit()
 	
+	
+func abrir():
+	var file = FileAccess.open("D:\\_SetimoPeriodo\\testeGodot.txt", FileAccess.READ)
+	var content = file.get_as_text()
+	print(content)

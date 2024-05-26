@@ -1,10 +1,25 @@
-[gd_scene load_steps=3 format=3 uid="uid://4tedqsi4ypk7"]
+[gd_scene load_steps=4 format=3 uid="uid://4tedqsi4ypk7"]
+
+[sub_resource type="GDScript" id="GDScript_pr5wa"]
+script/source = "extends Node3D
+
+
+
+func _ready():
+	pass 
+
+
+
+func _process(delta):
+	pass
+"
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_qxm5n"]
 
 [sub_resource type="TubeTrailMesh" id="TubeTrailMesh_dqhqa"]
 
 [node name="Node3D" type="Node3D"]
+script = SubResource("GDScript_pr5wa")
 
 [node name="Area3D" type="Area3D" parent="."]
 

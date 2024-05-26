@@ -4,32 +4,54 @@
 script/source = "extends Node3D
 
 var neuronio
-var ativado
+var infoNeuronio
+var dadosNeuronio
+var ativado 
+var bias 
 
 func _ready():
 	neuronio = get_node(\"Area3D/AreaColisao/Neuronio\")
-	print(neuronio)
+	infoNeuronio = get_node(\"./InfoNeuronio\")
+	infoNeuronio.visible = false
+	dadosNeuronio = get_node(\"./InfoNeuronio/dados\")
+	
+
 
 
 func _process(delta):
-	pass
+	if ativado:
+		dadosNeuronio.text = \"Estado: Ativado \\nBias: %s\" % [bias]
+	else:
+		dadosNeuronio.text = \"Estado: Desativado \\nBias: %s\" % [bias]
+
 
 
 func EscolheCor(cor):
 	var mat = neuronio.mesh.material
-	if cor == 0:
-		mat.albedo_color = Color(255 , 0, 0, 1)
+	if cor == 0:  ## Neuronio desativado
+		mat.albedo_color = Color(255, 0, 0, 1)
 		neuronio.mesh.surface_set_material(0, mat.duplicate())
-	else:
-		mat.albedo_color = Color(0 , 255, 0, 1)
+		ativado = 0
+	elif cor == 1: ## Neuronio ativado
+		mat.albedo_color = Color(0, 255, 0, 1)
 		neuronio.mesh.surface_set_material(0, mat.duplicate())
+		ativado = 1
+	elif cor == 2: ## Neuronio ressaltado
+		mat.albedo_color = Color(100, 255, 0, 1)
+		neuronio.mesh.surface_set_material(0, mat.duplicate())
+		
+
+	
+
 
 ## Interação com o mouse ##
 func _on_area_3d_mouse_entered():
-	EscolheCor(0)
+	EscolheCor(2)
+	infoNeuronio.visible = true
 
 func _on_area_3d_mouse_exited():
-	EscolheCor(1)
+	EscolheCor(ativado)
+	infoNeuronio.visible = false
 #####
 "
 
@@ -54,6 +76,30 @@ shape = SubResource("CapsuleShape3D_ev4id")
 [node name="Neuronio" type="MeshInstance3D" parent="Area3D/AreaColisao"]
 transform = Transform3D(1, 0, 0, 0, 0.98407, 0, 0, 0, 1, 0, 0, -0.0124602)
 mesh = SubResource("CapsuleMesh_544g7")
+
+[node name="InfoNeuronio" type="Panel" parent="."]
+modulate = Color(1, 1, 1, 0.329412)
+offset_left = 486.0
+offset_top = 227.0
+offset_right = 684.0
+offset_bottom = 352.0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="InfoNeuronio"]
+layout_mode = 0
+offset_left = 15.0
+offset_top = 11.0
+offset_right = 210.0
+offset_bottom = 51.0
+text = "Neurônio tal tal tal"
+
+[node name="dados" type="RichTextLabel" parent="InfoNeuronio"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 52.0
+offset_right = 211.0
+offset_bottom = 112.0
+text = "Peso:
+Bias:"
 
 [connection signal="mouse_entered" from="Area3D" to="." method="_on_area_3d_mouse_entered"]
 [connection signal="mouse_exited" from="Area3D" to="." method="_on_area_3d_mouse_exited"]

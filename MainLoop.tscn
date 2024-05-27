@@ -1,8 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://wwhpht57hb47"]
+[gd_scene load_steps=6 format=3 uid="uid://wwhpht57hb47"]
 
 [ext_resource type="Script" path="res://mainLoop.gd" id="1_3oew7"]
-[ext_resource type="Script" path="res://texto.gd" id="2_mtfqe"]
-[ext_resource type="Script" path="res://labelRede.gd" id="3_6x42u"]
+[ext_resource type="Script" path="res://camera.gd" id="2_nqnac"]
 
 [sub_resource type="Environment" id="Environment_2vuxu"]
 background_mode = 1
@@ -27,39 +26,13 @@ shape = SubResource("BoxShape3D_r1prp")
 disabled = true
 
 [node name="Camera3D" type="Camera3D" parent="."]
+script = ExtResource("2_nqnac")
 
-[node name="Button0" type="Button" parent="."]
-offset_left = 1028.0
-offset_top = 26.0
-offset_right = 1109.0
-offset_bottom = 82.0
+[node name="SAIR" type="Button" parent="."]
+offset_left = 1046.0
+offset_top = 35.0
+offset_right = 1121.0
+offset_bottom = 75.0
 text = "VOLTAR"
 
-[node name="GerarCapsula" type="Button" parent="."]
-offset_left = 718.0
-offset_top = 544.0
-offset_right = 913.0
-offset_bottom = 593.0
-text = "Gerar Neuronio Teste"
-
-[node name="InputRede" type="TextEdit" parent="."]
-offset_left = 927.0
-offset_top = 543.0
-offset_right = 1120.0
-offset_bottom = 591.0
-script = ExtResource("2_mtfqe")
-
-[node name="LabelRede" type="RichTextLabel" parent="."]
-offset_left = 434.0
-offset_top = 228.0
-offset_right = 700.0
-offset_bottom = 268.0
-script = ExtResource("3_6x42u")
-
-[connection signal="button_down" from="Button0" to="." method="_on_button_0_button_down"]
-[connection signal="button_down" from="GerarCapsula" to="." method="_on_button_1_button_down"]
-[connection signal="button_down" from="GerarCapsula" to="InputRede" method="_on_gerar_capsula_button_down"]
-[connection signal="button_down" from="GerarCapsula" to="LabelRede" method="_on_gerar_capsula_button_down"]
-[connection signal="caret_changed" from="InputRede" to="." method="_on_text_edit_caret_changed"]
-[connection signal="gutter_added" from="InputRede" to="." method="_on_text_edit_gutter_added"]
-[connection signal="gutter_clicked" from="InputRede" to="." method="_on_text_edit_gutter_clicked"]
+[connection signal="button_down" from="SAIR" to="." method="_on_sair_button_down"]

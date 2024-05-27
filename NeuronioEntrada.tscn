@@ -1,22 +1,62 @@
-[gd_scene load_steps=4 format=3 uid="uid://4tedqsi4ypk7"]
+[gd_scene load_steps=5 format=3 uid="uid://4tedqsi4ypk7"]
 
 [sub_resource type="GDScript" id="GDScript_pr5wa"]
 script/source = "extends Node3D
 
-
+var neuronio
+var infoNeuronio
+var dadosINPUT
+var ativado 
+@onready var text_edit = $InfoNeuronio/TextEdit
 
 func _ready():
-	pass 
+	neuronio = get_node(\"Area3D/AreaColisao/Neuronio\")
+	infoNeuronio = get_node(\"./InfoNeuronio\")
+	infoNeuronio.visible = false
+	dadosINPUT = get_node(\"./InfoNeuronio/dados\")
+	EscolheCor(1)
 
+
+func EscolheCor(cor):
+	var mat = neuronio.mesh.material
+	if cor == 0:  ## Neuronio não preenchido
+		mat.albedo_color = Color(0.7, 0.6, 1, 1)
+		neuronio.mesh.surface_set_material(0, mat.duplicate())
+		ativado = 0
+	elif cor == 1: ## Neuronio preenchido
+		mat.albedo_color = Color(10, 200, 100, 1)
+		neuronio.mesh.surface_set_material(0, mat.duplicate())
+		ativado = 1
+	elif cor == 2: ## Neuronio ressaltado
+		mat.albedo_color = Color(100, 255, 0, 0.2)
+		neuronio.mesh.surface_set_material(0, mat.duplicate())
+		
+
+## Interação com o mouse ##
+func _on_area_3d_mouse_entered():
+	EscolheCor(2)
+	text_edit.grab_focus()
+	infoNeuronio.visible = true
+
+func _on_area_3d_mouse_exited():
+	EscolheCor(ativado)
+	infoNeuronio.visible = false
+#####
 
 
 func _process(delta):
 	pass
 "
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_qxm5n"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_bovst"]
 
-[sub_resource type="TubeTrailMesh" id="TubeTrailMesh_dqhqa"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8qit5"]
+resource_local_to_scene = true
+albedo_color = Color(0.764706, 0.835294, 1, 1)
+
+[sub_resource type="TubeTrailMesh" id="TubeTrailMesh_xnwui"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_8qit5")
 
 [node name="Node3D" type="Node3D"]
 script = SubResource("GDScript_pr5wa")
@@ -24,9 +64,35 @@ script = SubResource("GDScript_pr5wa")
 [node name="Area3D" type="Area3D" parent="."]
 
 [node name="AreaColisao" type="CollisionShape3D" parent="Area3D"]
-transform = Transform3D(0.837866, 0, 0, 0, 0.603295, 0, 0, 0, 0.837866, 0, 0, -4.00136)
-shape = SubResource("CapsuleShape3D_qxm5n")
+transform = Transform3D(0.7, 0, 0, 0, 0.5, 0, 0, 0, 0.7, 0, 0, -4.00136)
+shape = SubResource("BoxShape3D_bovst")
 
 [node name="Neuronio" type="MeshInstance3D" parent="Area3D/AreaColisao"]
 transform = Transform3D(1, 0, 0, 0, 0.98407, 0, 0, 0, 1, 0, 0, -0.0124602)
-mesh = SubResource("TubeTrailMesh_dqhqa")
+mesh = SubResource("TubeTrailMesh_xnwui")
+
+[node name="InfoNeuronio" type="Panel" parent="."]
+modulate = Color(1, 1, 1, 0.941176)
+offset_left = 42.0
+offset_top = 512.0
+offset_right = 240.0
+offset_bottom = 606.0
+
+[node name="dados" type="RichTextLabel" parent="InfoNeuronio"]
+layout_mode = 0
+offset_left = 15.0
+offset_top = 11.0
+offset_right = 210.0
+offset_bottom = 51.0
+text = "Neurônio de INPUT"
+
+[node name="TextEdit" type="TextEdit" parent="InfoNeuronio"]
+layout_mode = 0
+offset_left = 14.0
+offset_top = 43.0
+offset_right = 164.0
+offset_bottom = 71.0
+placeholder_text = "Insira o valor"
+
+[connection signal="mouse_entered" from="Area3D" to="." method="_on_area_3d_mouse_entered"]
+[connection signal="mouse_exited" from="Area3D" to="." method="_on_area_3d_mouse_exited"]

@@ -1,0 +1,67 @@
+[gd_scene load_steps=8 format=3 uid="uid://wwhpht57hb47"]
+
+[ext_resource type="Script" path="res://mainLoop.gd" id="1_3oew7"]
+[ext_resource type="Script" path="res://texto.gd" id="2_mtfqe"]
+[ext_resource type="Script" path="res://camera.gd" id="2_nqnac"]
+[ext_resource type="Script" path="res://labelRede.gd" id="3_6x42u"]
+
+[sub_resource type="Environment" id="Environment_2vuxu"]
+background_mode = 1
+background_color = Color(0.27451, 0.407843, 0.505882, 1)
+
+[sub_resource type="CameraAttributesPhysical" id="CameraAttributesPhysical_jgex3"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_r1prp"]
+
+[node name="Node3D" type="Node3D"]
+script = ExtResource("1_3oew7")
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Area3D"]
+environment = SubResource("Environment_2vuxu")
+camera_attributes = SubResource("CameraAttributesPhysical_jgex3")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(100, 0, 0, 0, 100, 0, 0, 0, 100, -0.0265163, 0, 0)
+shape = SubResource("BoxShape3D_r1prp")
+disabled = true
+
+[node name="Camera3D" type="Camera3D" parent="."]
+script = ExtResource("2_nqnac")
+
+[node name="Button0" type="Button" parent="."]
+offset_left = 1046.0
+offset_top = 35.0
+offset_right = 1121.0
+offset_bottom = 75.0
+text = "VOLTAR"
+
+[node name="GerarCapsula" type="Button" parent="."]
+offset_left = 40.0
+offset_top = 39.0
+offset_right = 240.0
+offset_bottom = 88.0
+text = "Gerar Neuronio Teste"
+
+[node name="InputRede" type="TextEdit" parent="."]
+offset_left = 40.0
+offset_top = 97.0
+offset_right = 240.0
+offset_bottom = 145.0
+script = ExtResource("2_mtfqe")
+
+[node name="LabelRede" type="RichTextLabel" parent="."]
+offset_left = 434.0
+offset_top = 228.0
+offset_right = 700.0
+offset_bottom = 268.0
+script = ExtResource("3_6x42u")
+
+[connection signal="button_down" from="Button0" to="." method="_on_button_0_button_down"]
+[connection signal="button_down" from="GerarCapsula" to="." method="_on_button_1_button_down"]
+[connection signal="button_down" from="GerarCapsula" to="InputRede" method="_on_gerar_capsula_button_down"]
+[connection signal="button_down" from="GerarCapsula" to="LabelRede" method="_on_gerar_capsula_button_down"]
+[connection signal="caret_changed" from="InputRede" to="." method="_on_text_edit_caret_changed"]
+[connection signal="gutter_added" from="InputRede" to="." method="_on_text_edit_gutter_added"]
+[connection signal="gutter_clicked" from="InputRede" to="." method="_on_text_edit_gutter_clicked"]

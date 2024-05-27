@@ -9,35 +9,35 @@ script = ExtResource("1_bmj6w")
 [node name="Camera3D" type="Camera3D" parent="."]
 
 [node name="ACESSAR" type="Button" parent="."]
-offset_left = 365.0
-offset_top = 417.0
-offset_right = 632.0
-offset_bottom = 455.0
+offset_left = 369.0
+offset_top = 365.0
+offset_right = 789.0
+offset_bottom = 409.0
 text = "GERAR"
 
 [node name="SAIR" type="Button" parent="."]
-offset_left = 1032.0
-offset_top = 584.0
-offset_right = 1097.0
-offset_bottom = 627.0
+offset_left = 1035.0
+offset_top = 34.0
+offset_right = 1119.0
+offset_bottom = 88.0
 text = "SAIR"
 
 [node name="InputRede" type="TextEdit" parent="."]
-offset_left = 365.0
-offset_top = 365.0
-offset_right = 784.0
-offset_bottom = 403.0
+offset_left = 369.0
+offset_top = 309.0
+offset_right = 636.0
+offset_bottom = 347.0
 script = ExtResource("2_x1shc")
 
 [node name="COLAR" type="Button" parent="."]
-offset_left = 639.0
-offset_top = 417.0
-offset_right = 706.0
-offset_bottom = 455.0
+offset_left = 643.0
+offset_top = 309.0
+offset_right = 710.0
+offset_bottom = 347.0
 text = "COLAR"
 
 [node name="DialogoFile" type="FileDialog" parent="."]
-title = "Open a File or Directory"
+title = "Selecione o Arquivo"
 initial_position = 4
 size = Vector2i(406, 159)
 ok_button_text = "Abrir"
@@ -47,17 +47,17 @@ access = 2
 use_native_dialog = true
 
 [node name="NAVEGAR" type="Button" parent="."]
-offset_left = 364.0
-offset_top = 307.0
-offset_right = 784.0
-offset_bottom = 351.0
+offset_left = 368.0
+offset_top = 251.0
+offset_right = 788.0
+offset_bottom = 295.0
 text = "ABRIR NAVEGADOR DE ARQUIVOS"
 
 [node name="LIMPAR" type="Button" parent="."]
-offset_left = 713.0
-offset_top = 417.0
-offset_right = 784.0
-offset_bottom = 455.0
+offset_left = 717.0
+offset_top = 309.0
+offset_right = 788.0
+offset_bottom = 347.0
 text = "LIMPAR"
 
 [connection signal="button_down" from="ACESSAR" to="." method="_on_jogar_button_down"]

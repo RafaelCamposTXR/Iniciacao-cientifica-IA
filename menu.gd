@@ -1,24 +1,16 @@
 extends Node3D
+@onready var input_rede = $InputRede
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
 	pass
 
-func _on_button_button_down():
-	get_tree().quit()
-
-
-func _on_text_edit_focus_entered():
-	get_tree().quit()
+func _process(delta):
 	pass
 
 
 func _on_jogar_button_down():
-	get_tree().change_scene_to_file("res://MainLoop.tscn")
+	if input_rede.retorna_texto() != null:
+		get_tree().change_scene_to_file("res://MainLoop.tscn")
 	
 
 func _on_sair_button_down():
@@ -29,3 +21,7 @@ func abrir():
 	var file = FileAccess.open("D:\\_SetimoPeriodo\\testeGodot.txt", FileAccess.READ)
 	var content = file.get_as_text()
 	print(content)
+	return file
+
+
+

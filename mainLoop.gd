@@ -3,6 +3,7 @@ extends Node3D
 
 ## Instanciamento de Neurônio ##
 var NovaCapsula = preload("res://Neuronio.tscn")
+var NeuronioEntradaNovo = preload("res://NeuronioEntrada.tscn")
 var instanciasCapsula = []
 var qtdCAP = 0
 #####
@@ -15,48 +16,71 @@ var y = 2
 
 
 func _ready():
+	
+	##Neuronio De Entrada de Teste
+	CriarNeuronioEntrada(-2,2,0,0,7)
+	CriarNeuronioEntrada(-2,0,0,0,7)
+	CriarNeuronioEntrada(-2,2,-2,0,7)
+	CriarNeuronioEntrada(-2,0,-2,0,7)
+	CriarNeuronioEntrada(-2,2,-4,0,7)
+	CriarNeuronioEntrada(-2,0,-4,0,7)
+	####
+	
 	##Neuronios de Teste
-	CriarCapsula(0,1,5.6)
-	CriarCapsula(2,0,10.3)
-	CriarCapsula(4,1,5)
-	###
+	CriarNeuronio(2,4,0,1,5.6)
+	CriarNeuronio(0,2,0,1,5.6)
+	CriarNeuronio(2,2,0,0,10.3)
+	CriarNeuronio(4,2,0,1,5)
+	
+	CriarNeuronio(0,0,0,0,5.6)
+	CriarNeuronio(2,0,0,0,10.3)
+	CriarNeuronio(4,0,0,1,5)
+	
+	CriarNeuronio(2,4,-4,1,5.6)
+	CriarNeuronio(0,2,-4,1,5.6)
+	CriarNeuronio(2,2,-4,0,10.3)
+	CriarNeuronio(4,2,-4,1,5)
+	
+	CriarNeuronio(0,0,-4,0,5.6)
+	CriarNeuronio(2,0,-4,0,10.3)
+	CriarNeuronio(4,0,-4,1,5)
+	
+	CriarNeuronio(2,4,-2,1,5.6)
+	CriarNeuronio(0,2,-2,1,5.6)
+	CriarNeuronio(2,2,-2,0,10.3)
+	CriarNeuronio(4,2,-2,1,5)
+	
+	CriarNeuronio(0,0,-2,0,5.6)
+	CriarNeuronio(2,0,-2,0,10.3)
+	CriarNeuronio(4,0,-2,1,5)
+	####
 
 
 func _process(delta):
 	pass
 	
 
-func instanciarCapsula(pos):
+## Criação de Neurônio ##
+func CriarNeuronio(posx, posy, posz, ativado, bias):
 	instanciasCapsula.append(NovaCapsula.instantiate())
 	add_child(instanciasCapsula[qtdCAP])
-	instanciasCapsula[qtdCAP].position = pos
-	pos.x += 1
+	instanciasCapsula[qtdCAP].position = Vector3(posx,posy,posz)
+	instanciasCapsula[qtdCAP].EscolheCor(ativado)
+	instanciasCapsula[qtdCAP].bias = bias
 	qtdCAP += 1
 	return instanciasCapsula[qtdCAP-1]
 	
-	
-func CriarCapsula(pos, ativado, bias):
-	var N = instanciarCapsula(Vector3(pos,y,0))
-	N.EscolheCor(ativado)
-	N.bias = bias
+func CriarNeuronioEntrada(posx, posy, posz, ativado, valor):
+	var NeuronioEntrada = NeuronioEntradaNovo.instantiate()
+	add_child(NeuronioEntrada)
+	NeuronioEntrada.position = Vector3(posx,posy,posz)
+	NeuronioEntrada.EscolheCor(ativado)
+####
 
 
-func _on_button_0_button_down():
+func _on_sair_button_down():
 	get_tree().change_scene_to_file("res://MenuPrincipal.tscn")
 
-
-func _on_button_1_button_down():
-	instanciarCapsula(Vector3(x,y,0))
-	x += 2
-
-
-func _on_remover_capsula_button_down():
-	if qtdCAP > 0:
-		instanciasCapsula[qtdCAP-1].queue_free()
-		instanciasCapsula.remove_at(qtdCAP-1)
-		qtdCAP -= 1
-	else:
-		pass
 
 
 

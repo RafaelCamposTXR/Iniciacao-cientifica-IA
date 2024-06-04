@@ -50,13 +50,11 @@ func _process(delta):
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_bovst"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8qit5"]
-resource_local_to_scene = true
-albedo_color = Color(0.764706, 0.835294, 1, 1)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0jkrj"]
 
-[sub_resource type="TubeTrailMesh" id="TubeTrailMesh_xnwui"]
+[sub_resource type="TubeTrailMesh" id="TubeTrailMesh_r10e4"]
 resource_local_to_scene = true
-material = SubResource("StandardMaterial3D_8qit5")
+material = SubResource("StandardMaterial3D_0jkrj")
 
 [node name="Node3D" type="Node3D"]
 script = SubResource("GDScript_pr5wa")
@@ -69,7 +67,7 @@ shape = SubResource("BoxShape3D_bovst")
 
 [node name="Neuronio" type="MeshInstance3D" parent="Area3D/AreaColisao"]
 transform = Transform3D(1, 0, 0, 0, 0.98407, 0, 0, 0, 1, 0, 0, -0.0124602)
-mesh = SubResource("TubeTrailMesh_xnwui")
+mesh = SubResource("TubeTrailMesh_r10e4")
 
 [node name="InfoNeuronio" type="Panel" parent="."]
 modulate = Color(1, 1, 1, 0.941176)

@@ -1,4 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://yhqjnhdpx5ik"]
+[gd_scene load_steps=9 format=3 uid="uid://yhqjnhdpx5ik"]
+
+[ext_resource type="Script" path="res://Conexao.gd" id="1_x8ulr"]
 
 [sub_resource type="GDScript" id="GDScript_f6mwv"]
 script/source = "extends Node3D
@@ -55,8 +57,8 @@ func _on_area_3d_mouse_exited():
 #####
 "
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_cl853"]
-size = Vector3(1.19385, 0.592651, 0.711609)
+[sub_resource type="BoxShape3D" id="BoxShape3D_4ptgm"]
+size = Vector3(0.753418, 0.541504, 0.518311)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3p5qa"]
 vertex_color_use_as_albedo = true
@@ -66,6 +68,13 @@ albedo_color = Color(1, 0.27451, 0.164706, 1)
 resource_local_to_scene = true
 material = SubResource("StandardMaterial3D_3p5qa")
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sodhe"]
+vertex_color_use_as_albedo = true
+
+[sub_resource type="ImmediateMesh" id="ImmediateMesh_p52kc"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_83rqu"]
+
 [node name="Node3D" type="Node3D"]
 script = SubResource("GDScript_f6mwv")
 
@@ -73,11 +82,11 @@ script = SubResource("GDScript_f6mwv")
 metadata/_edit_lock_ = true
 
 [node name="AreaColisao" type="CollisionShape3D" parent="Area3D"]
-transform = Transform3D(0.988767, 0, 0, 0, 0.988767, 0, 0, 0, 0.988767, -0.0963188, 0.0527199, -4.13769)
-shape = SubResource("BoxShape3D_cl853")
+transform = Transform3D(0.988767, 0, 0, 0, 0.988767, 0, 0, 0, 0.988767, 0.0239988, 0.0775123, -3.8921)
+shape = SubResource("BoxShape3D_4ptgm")
 
 [node name="Neuronio" type="MeshInstance3D" parent="Area3D/AreaColisao"]
-transform = Transform3D(1, 0, 0, 0, 0.3, 0, 0, 0, 0.6, 0, 0, -0.0124602)
+transform = Transform3D(1, 0, 0, 0, 0.3, 0, 0, 0, 0.6, 0, -0.0449195, -0.0124602)
 mesh = SubResource("CapsuleMesh_544g7")
 
 [node name="InfoNeuronio" type="Panel" parent="."]
@@ -104,5 +113,21 @@ offset_bottom = 112.0
 text = "Peso:
 Bias:"
 
+[node name="Conexao" type="Node" parent="."]
+script = ExtResource("1_x8ulr")
+
+[node name="Area3D" type="Area3D" parent="Conexao"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Conexao/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -3.13247)
+material_override = SubResource("StandardMaterial3D_sodhe")
+mesh = SubResource("ImmediateMesh_p52kc")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Conexao/Area3D/MeshInstance3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Conexao/Area3D/MeshInstance3D/StaticBody3D"]
+shape = SubResource("ConvexPolygonShape3D_83rqu")
+
 [connection signal="mouse_entered" from="Area3D" to="." method="_on_area_3d_mouse_entered"]
 [connection signal="mouse_exited" from="Area3D" to="." method="_on_area_3d_mouse_exited"]
+[connection signal="mouse_entered" from="Conexao/Area3D/MeshInstance3D/StaticBody3D" to="Conexao" method="_on_static_body_3d_mouse_entered"]

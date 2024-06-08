@@ -3,6 +3,7 @@ extends Node3D
 
 ## Instanciamento de Neurônio ##
 var NovaCapsula = preload("res://Neuronio.tscn")
+var NovaLinha = preload("res://Linha.tscn")
 var NeuronioEntradaNovo = preload("res://NeuronioEntrada.tscn")
 var instanciasCapsula = []
 var qtdCAP = 0
@@ -16,6 +17,7 @@ var y = 2
 
 
 func _ready():
+	CriarLinha()
 	
 	##Neuronio De Entrada de Teste
 	CriarNeuronioEntrada(-2,2,0,0,7)
@@ -77,6 +79,9 @@ func CriarNeuronioEntrada(posx, posy, posz, ativado, valor):
 	NeuronioEntrada.EscolheCor(ativado)
 ####
 
+func CriarLinha():
+	var novaLinha = NovaLinha.instantiate()
+	add_child(novaLinha)
 
 func _on_sair_button_down():
 	get_tree().change_scene_to_file("res://MenuPrincipal.tscn")

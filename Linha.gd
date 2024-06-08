@@ -1,12 +1,14 @@
-extends Node
+extends Node3D
 
 @onready var desenho_linha = $Area3D/MeshInstance3D
+@onready var info_neuronio = $InfoNeuronio
 
 
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	info_neuronio.visible = false
 	pass
 
 func desenhar_linha(point_a: Vector3, point_b: Vector3):
@@ -24,11 +26,23 @@ func desenhar_linha(point_a: Vector3, point_b: Vector3):
 func _process(delta):
 	pass
 
+func EscolheCor(cor):
+	var mat = desenho_linha.mesh.material
+	if cor == 0:  ## linha em estado padrão
+		mat.albedo_color = Color(0.7, 0.8, 0.9, 1)
+		desenho_linha.mesh.surface_set_material(0, mat.duplicate())
+	elif cor == 1: ## linha Selecionada
+		mat.albedo_color = Color(100, 255, 0, 0.2)
+		desenho_linha.mesh.surface_set_material(0, mat.duplicate())
 
-func _on_static_body_3d_mouse_entered():
-	print("deu certo")
-	desenho_linha.mesh.clear_surfaces()
+
 
 
 func _on_area_3d_mouse_entered():
-	print("deu certo")
+	info_neuronio.visible = true
+	EscolheCor(1)
+
+
+func _on_area_3d_mouse_exited():
+	info_neuronio.visible = false
+	EscolheCor(0)

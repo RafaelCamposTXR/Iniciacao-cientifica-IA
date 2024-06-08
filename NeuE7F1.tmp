@@ -1,0 +1,133 @@
+[gd_scene load_steps=9 format=3 uid="uid://yhqjnhdpx5ik"]
+
+[ext_resource type="Script" path="res://Conexao.gd" id="1_x8ulr"]
+
+[sub_resource type="GDScript" id="GDScript_f6mwv"]
+script/source = "extends Node3D
+
+var neuronio
+var infoNeuronio
+var dadosNeuronio
+var ativado 
+var bias 
+
+func _ready():
+	neuronio = get_node(\"Area3D/AreaColisao/Neuronio\")
+	infoNeuronio = get_node(\"./InfoNeuronio\")
+	infoNeuronio.visible = false
+	dadosNeuronio = get_node(\"./InfoNeuronio/dados\")
+	
+
+
+
+func _process(delta):
+	if ativado:
+		dadosNeuronio.text = \"Estado: Ativado \\nBias: %s\" % [bias]
+	else:
+		dadosNeuronio.text = \"Estado: Desativado \\nBias: %s\" % [bias]
+
+
+
+func EscolheCor(cor):
+	var mat = neuronio.mesh.material
+	if cor == 0:  ## Neuronio desativado
+		mat.albedo_color = Color(255, 0, 0, 1)
+		neuronio.mesh.surface_set_material(0, mat.duplicate())
+		ativado = 0
+	elif cor == 1: ## Neuronio ativado
+		mat.albedo_color = Color(0, 255, 0, 1)
+		neuronio.mesh.surface_set_material(0, mat.duplicate())
+		ativado = 1
+	elif cor == 2: ## Neuronio ressaltado
+		mat.albedo_color = Color(100, 255, 0, 0.2)
+		neuronio.mesh.surface_set_material(0, mat.duplicate())
+		
+
+	
+
+
+## Interação com o mouse ##
+func _on_area_3d_mouse_entered():
+	EscolheCor(2)
+	infoNeuronio.visible = true
+
+func _on_area_3d_mouse_exited():
+	EscolheCor(ativado)
+	infoNeuronio.visible = false
+#####
+"
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_4ptgm"]
+size = Vector3(0.753418, 0.541504, 0.518311)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3p5qa"]
+vertex_color_use_as_albedo = true
+albedo_color = Color(1, 0.27451, 0.164706, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_544g7"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_3p5qa")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sodhe"]
+vertex_color_use_as_albedo = true
+
+[sub_resource type="ImmediateMesh" id="ImmediateMesh_p52kc"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_83rqu"]
+
+[node name="Node3D" type="Node3D"]
+script = SubResource("GDScript_f6mwv")
+
+[node name="Area3D" type="Area3D" parent="."]
+metadata/_edit_lock_ = true
+
+[node name="AreaColisao" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(0.988767, 0, 0, 0, 0.988767, 0, 0, 0, 0.988767, 0.0239988, 0.0775123, -3.8921)
+shape = SubResource("BoxShape3D_4ptgm")
+
+[node name="Neuronio" type="MeshInstance3D" parent="Area3D/AreaColisao"]
+transform = Transform3D(1, 0, 0, 0, 0.3, 0, 0, 0, 0.6, 0, -0.0449195, -0.0124602)
+mesh = SubResource("CapsuleMesh_544g7")
+
+[node name="InfoNeuronio" type="Panel" parent="."]
+modulate = Color(1, 1, 1, 0.941176)
+offset_left = 40.0
+offset_top = 486.0
+offset_right = 238.0
+offset_bottom = 611.0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="InfoNeuronio"]
+layout_mode = 0
+offset_left = 15.0
+offset_top = 11.0
+offset_right = 210.0
+offset_bottom = 51.0
+text = "Neurônio tal tal tal"
+
+[node name="dados" type="RichTextLabel" parent="InfoNeuronio"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 52.0
+offset_right = 211.0
+offset_bottom = 112.0
+text = "Peso:
+Bias:"
+
+[node name="Conexao" type="Node" parent="."]
+script = ExtResource("1_x8ulr")
+
+[node name="Area3D" type="Area3D" parent="Conexao"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Conexao/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -3.13247)
+material_override = SubResource("StandardMaterial3D_sodhe")
+mesh = SubResource("ImmediateMesh_p52kc")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Conexao/Area3D/MeshInstance3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Conexao/Area3D/MeshInstance3D/StaticBody3D"]
+shape = SubResource("ConvexPolygonShape3D_83rqu")
+
+[connection signal="mouse_entered" from="Area3D" to="." method="_on_area_3d_mouse_entered"]
+[connection signal="mouse_exited" from="Area3D" to="." method="_on_area_3d_mouse_exited"]
+[connection signal="mouse_entered" from="Conexao/Area3D/MeshInstance3D/StaticBody3D" to="Conexao" method="_on_static_body_3d_mouse_entered"]

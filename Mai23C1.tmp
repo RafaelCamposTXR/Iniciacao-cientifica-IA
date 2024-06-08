@@ -1,0 +1,38 @@
+[gd_scene load_steps=6 format=3 uid="uid://wwhpht57hb47"]
+
+[ext_resource type="Script" path="res://mainLoop.gd" id="1_3oew7"]
+[ext_resource type="Script" path="res://camera.gd" id="2_nqnac"]
+
+[sub_resource type="Environment" id="Environment_2vuxu"]
+background_mode = 1
+background_color = Color(0.27451, 0.407843, 0.505882, 1)
+
+[sub_resource type="CameraAttributesPhysical" id="CameraAttributesPhysical_jgex3"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_r1prp"]
+
+[node name="Node3D" type="Node3D"]
+script = ExtResource("1_3oew7")
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Area3D"]
+environment = SubResource("Environment_2vuxu")
+camera_attributes = SubResource("CameraAttributesPhysical_jgex3")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(100, 0, 0, 0, 100, 0, 0, 0, 100, -0.0265163, 0, 0)
+shape = SubResource("BoxShape3D_r1prp")
+disabled = true
+
+[node name="Camera3D" type="Camera3D" parent="."]
+script = ExtResource("2_nqnac")
+
+[node name="SAIR" type="Button" parent="."]
+offset_left = 1046.0
+offset_top = 35.0
+offset_right = 1121.0
+offset_bottom = 75.0
+text = "VOLTAR"
+
+[connection signal="button_down" from="SAIR" to="." method="_on_sair_button_down"]

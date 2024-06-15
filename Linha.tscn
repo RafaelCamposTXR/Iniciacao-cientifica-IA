@@ -6,7 +6,8 @@
 resource_local_to_scene = true
 albedo_color = Color(0.603922, 0.737255, 0.796078, 1)
 
-[sub_resource type="CylinderMesh" id="CylinderMesh_mo52i"]
+[sub_resource type="CylinderMesh" id="CylinderMesh_a0hft"]
+resource_local_to_scene = true
 material = SubResource("StandardMaterial3D_5y30j")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_7y1is"]
@@ -19,11 +20,11 @@ input_capture_on_drag = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Area3D"]
 transform = Transform3D(0.08, 0, 0, 0, 1, 0, 0, 0, 0.08, 0, 0, -2.67657)
-mesh = SubResource("CylinderMesh_mo52i")
+mesh = SubResource("CylinderMesh_a0hft")
 skeleton = NodePath("")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
-transform = Transform3D(0.23, 0, 0, 0, 2.049, 0, 0, 0, 0.23, 0, 0, -2.6697)
+transform = Transform3D(0.16, 0, 0, 0, 2.049, 0, 0, 0, 0.16, 0, 0, -2.6697)
 shape = SubResource("BoxShape3D_7y1is")
 
 [node name="InfoNeuronio" type="Panel" parent="."]

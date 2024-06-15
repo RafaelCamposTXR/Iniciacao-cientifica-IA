@@ -19,12 +19,12 @@ func desenhar_linha(point_a: Vector3, point_b: Vector3):
 		desenho_linha.mesh.surface_set_color(Color.RED)
 		desenho_linha.mesh.surface_add_vertex(point_a)
 		desenho_linha.mesh.surface_add_vertex(point_b)
-		
 		desenho_linha.mesh.surface_end()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	pass
+
 
 func EscolheCor(cor):
 	var mat = desenho_linha.mesh.material
@@ -34,8 +34,6 @@ func EscolheCor(cor):
 	elif cor == 1: ## linha Selecionada
 		mat.albedo_color = Color(100, 255, 0, 0.2)
 		desenho_linha.mesh.surface_set_material(0, mat.duplicate())
-
-
 
 
 func _on_area_3d_mouse_entered():

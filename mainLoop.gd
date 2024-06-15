@@ -17,7 +17,8 @@ var y = 2
 
 
 func _ready():
-	CriarLinha()
+	CriarLinha(Vector3(1,1,1), Vector3(3,3,3))
+	CriarLinha(Vector3(1,1,1), Vector3(1,1,1))
 	
 	##Neuronio De Entrada de Teste
 	CriarNeuronioEntrada(-2,2,0,0,7)
@@ -79,9 +80,17 @@ func CriarNeuronioEntrada(posx, posy, posz, ativado, valor):
 	NeuronioEntrada.EscolheCor(ativado)
 ####
 
-func CriarLinha():
+#Criação de conexão
+func CriarLinha(pos0, pos1):
 	var novaLinha = NovaLinha.instantiate()
 	add_child(novaLinha)
+	novaLinha.position.x = (pos1.x + pos0.x) / 2
+	novaLinha.position.y = (pos1.y + pos0.y) / 2
+	novaLinha.position.z = (pos1.z + pos0.z) / 2
+	novaLinha.rotate_x(3.14)
+	
+###
+
 
 func _on_sair_button_down():
 	get_tree().change_scene_to_file("res://MenuPrincipal.tscn")

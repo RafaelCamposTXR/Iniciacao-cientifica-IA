@@ -62,7 +62,7 @@ script = SubResource("GDScript_pr5wa")
 [node name="Area3D" type="Area3D" parent="."]
 
 [node name="AreaColisao" type="CollisionShape3D" parent="Area3D"]
-transform = Transform3D(0.7, 0, 0, 0, 0.5, 0, 0, 0, 0.7, 0, 0, -4.00136)
+transform = Transform3D(0.7, 0, 0, 0, 0.5, 0, 0, 0, 0.7, 0, 0, 0)
 shape = SubResource("BoxShape3D_bovst")
 
 [node name="Neuronio" type="MeshInstance3D" parent="Area3D/AreaColisao"]

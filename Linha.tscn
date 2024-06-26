@@ -19,12 +19,13 @@ script = ExtResource("1_2n4qg")
 input_capture_on_drag = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Area3D"]
-transform = Transform3D(0.08, 0, 0, 0, 1, 0, 0, 0, 0.08, 0, 0, -2.67657)
+transform = Transform3D(0.08, 0, 0, 0, 1, 0, 0, 0, 0.08, 0, 0, 0)
 mesh = SubResource("CylinderMesh_a0hft")
 skeleton = NodePath("")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
-transform = Transform3D(0.16, 0, 0, 0, 2.049, 0, 0, 0, 0.16, 0, 0, -2.6697)
+transform = Transform3D(0.16, 0, 0, 0, 2.049, 0, 0, 0, 0.16, 0, 0, 0)
+rotation_order = 0
 shape = SubResource("BoxShape3D_7y1is")
 
 [node name="InfoNeuronio" type="Panel" parent="."]

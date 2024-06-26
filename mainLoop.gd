@@ -17,8 +17,7 @@ var y = 2
 
 
 func _ready():
-	CriarLinha(Vector3(1,1,1), Vector3(3,3,3))
-	CriarLinha(Vector3(1,1,1), Vector3(1,1,1))
+	CriarLinha(Vector3(-2,2,0), Vector3(2,4,0))
 	
 	##Neuronio De Entrada de Teste
 	CriarNeuronioEntrada(-2,2,0,0,7)
@@ -82,13 +81,27 @@ func CriarNeuronioEntrada(posx, posy, posz, ativado, valor):
 
 #Criação de conexão
 func CriarLinha(pos0, pos1):
+	var diff = pos1 - pos0
+	print(diff)
+	var rx = atan2(diff.y, diff.z)
+	var ry = atan2(diff.z, diff.x)
+	var rz = atan2(diff.y, diff.x)
+	
 	var novaLinha = NovaLinha.instantiate()
 	add_child(novaLinha)
-	novaLinha.position.x = (pos1.x + pos0.x) / 2
-	novaLinha.position.y = (pos1.y + pos0.y) / 2
-	novaLinha.position.z = (pos1.z + pos0.z) / 2
-	novaLinha.rotate_x(3.14)
 	
+	
+	var ponto_medio = (pos0 + pos1) / 2.0
+	novaLinha.position = ponto_medio
+	novaLinha.rotate_x(rx)
+	novaLinha.rotate_y(ry)
+	novaLinha.rotate_z(2*rz)
+	
+	
+	#novaLinha.look_at(diff, Vector3.UP)
+	#novaLinha.look_at_from_position ( ponto_medio, pos1,-Vector3.UP )
+	var comprimento = diff.length()
+	novaLinha.scale = Vector3(1, comprimento/10, 1)
 ###
 
 

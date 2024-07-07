@@ -80,12 +80,12 @@ script = SubResource("GDScript_f6mwv")
 metadata/_edit_lock_ = true
 
 [node name="Neuronio" type="MeshInstance3D" parent="Area3D"]
-transform = Transform3D(0.988767, 0, 0, 0, 0.29663, 0, 0, 0, 0.59326, 0.0239988, 0.0330974, -3.90442)
+transform = Transform3D(0.988767, 0, 0, 0, 0.29663, 0, 0, 0, 0.59326, 0, 0, 0)
 mesh = SubResource("CapsuleMesh_544g7")
 skeleton = NodePath("")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
-transform = Transform3D(0.988767, 0, 0, 0, 0.29663, 0, 0, 0, 0.59326, 0.0239988, 0.0330974, -3.90442)
+transform = Transform3D(0.988767, 0, 0, 0, 0.29663, 0, 0, 0, 0.59326, 0, 0, 0)
 shape = SubResource("ConvexPolygonShape3D_y6jcr")
 
 [node name="InfoNeuronio" type="Panel" parent="."]

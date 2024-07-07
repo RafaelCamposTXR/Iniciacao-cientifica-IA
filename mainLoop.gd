@@ -17,7 +17,7 @@ var y = 2
 
 
 func _ready():
-	CriarLinha()
+	CriarLinha(Vector3(-2,2,0), Vector3(2,4,0))
 	
 	##Neuronio De Entrada de Teste
 	CriarNeuronioEntrada(-2,2,0,0,7)
@@ -79,9 +79,31 @@ func CriarNeuronioEntrada(posx, posy, posz, ativado, valor):
 	NeuronioEntrada.EscolheCor(ativado)
 ####
 
-func CriarLinha():
+#Criação de conexão
+func CriarLinha(pos0, pos1):
+	var diff = pos1 - pos0
+	print(diff)
+	var rx = atan2(diff.y, diff.z)
+	var ry = atan2(diff.z, diff.x)
+	var rz = atan2(diff.y, diff.x)
+	
 	var novaLinha = NovaLinha.instantiate()
 	add_child(novaLinha)
+	
+	
+	var ponto_medio = (pos0 + pos1) / 2.0
+	novaLinha.position = ponto_medio
+	novaLinha.rotate_x(rx)
+	novaLinha.rotate_y(ry)
+	novaLinha.rotate_z(2*rz)
+	
+	
+	#novaLinha.look_at(diff, Vector3.UP)
+	#novaLinha.look_at_from_position ( ponto_medio, pos1,-Vector3.UP )
+	var comprimento = diff.length()
+	novaLinha.scale = Vector3(1, comprimento/10, 1)
+###
+
 
 func _on_sair_button_down():
 	get_tree().change_scene_to_file("res://MenuPrincipal.tscn")

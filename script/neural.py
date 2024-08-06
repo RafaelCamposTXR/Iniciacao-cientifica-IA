@@ -32,15 +32,15 @@ def store_neural_network_info(layers, inputs, hidden_outputs, output):
         "hidden_layer_count": len(layers) - 1,
         "hidden_layers": [],
         "output_layer": {
-            "weights": layers[-1][0],
-            "biases": layers[-1][1]
+            "weights": layers[-1]['weights'],
+            "biases": layers[-1]['biases']
         }
     }
     
     for i in range(len(layers) - 1):
         layer_info = {
-            "weights": layers[i][0],
-            "biases": layers[i][1]
+            "weights": layers[i]['weights'],
+            "biases": layers[i]['biases']
         }
         network_info["hidden_layers"].append(layer_info)
     
@@ -77,6 +77,7 @@ def process_inputs_through_network(inputs, network):
 def _ready(network_info):
     # Carrega a rede neural do JSON
     network = network_info['layers']
+    inputs = network_info['inputs']
     
     # Processa os inputs através da rede
     hidden_layer_outputs = []
@@ -92,9 +93,6 @@ def _ready(network_info):
     
     # Salva informações da rede neural em um arquivo JSON
     save_network_info_to_json("informacoes_rede.json", network_info)
-
-# Define os inputs conforme seu GDScript original
-inputs = [5.5, 2.5, 4.0, 1.3]
 
 # Carrega as informações da rede de um arquivo JSON
 network_info = load_network_info_from_json("modelo_rede.json")

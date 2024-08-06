@@ -1,6 +1,6 @@
 extends Node
 
-# Define a função de ativação ReLU
+# Função de ativação ReLU
 func ReLU(inputs, weights, bias):
     var x = summation(inputs, weights, bias)
     for i in range(x.size()):
@@ -13,14 +13,13 @@ func get_activation_function(name):
     if name == "ReLU":
         return ReLU
     # Adicione outras funções de ativação aqui conforme necessário
-    push_error("Função de ativação desconhecida: " + name)
     return null
 
-# Define a função de somatório
+# Função de somatório
 func summation(inputs, weights, bias):
     var result = []
     for j in range(weights.size()):
-        var summ = 0.0
+        var summ = 0
         for i in range(inputs.size()):
             summ += inputs[i] * weights[j][i]
         result.append(summ + bias[j])
@@ -33,8 +32,8 @@ func store_neural_network_info(layers, inputs, hidden_outputs, output):
         "hidden_layer_count": layers.size() - 1,
         "hidden_layers": [],
         "output_layer": {
-            "weights": layers[-1]["weights"],
-            "biases": layers[-1]["biases"]
+            "weights": layers[layers.size() - 1]["weights"],
+            "biases": layers[layers.size() - 1]["biases"]
         }
     }
     
@@ -64,8 +63,9 @@ func load_network_info_from_json(file_path):
         file.close()
         print("Informações da rede carregadas de " + file_path)
         return data
-    print("Falha ao carregar informações da rede")
-    return null
+    else:
+        print("Falha ao carregar informações da rede")
+        return null
 
 # Função para processar os inputs através da rede
 func process_inputs_through_network(inputs, network):
@@ -77,17 +77,13 @@ func process_inputs_through_network(inputs, network):
         current_output = activation_function(current_output, weights, biases)
     return current_output
 
-# Simula a função _ready() no Godot
+# Função para simular a inicialização no Godot
 func _ready():
-    # Define os inputs conforme seu GDScript original
-    var inputs = [5.5, 2.5, 4.0, 1.3]
-    
     # Carrega as informações da rede de um arquivo JSON
     var network_info = load_network_info_from_json("res://modelo_rede.json")
-    
     if network_info:
-        # Carrega a rede neural do JSON
         var network = network_info["layers"]
+        var inputs = network_info["inputs"]
         
         # Processa os inputs através da rede
         var hidden_layer_outputs = []
@@ -96,10 +92,10 @@ func _ready():
             current_output = process_inputs_through_network(current_output, [layer])
             hidden_layer_outputs.append(current_output)
         
-        var output_layer_output = process_inputs_through_network(current_output, [network[-1]])
+        var output_layer_output = process_inputs_through_network(current_output, [network[network.size() - 1]])
         
         # Captura e armazena informações da rede neural
-        network_info = store_neural_network_info(network, inputs, hidden_layer_outputs, output_layer_output)
+        var network_info = store_neural_network_info(network, inputs, hidden_layer_outputs, output_layer_output)
         
         # Salva informações da rede neural em um arquivo JSON
         save_network_info_to_json("res://informacoes_rede.json", network_info)

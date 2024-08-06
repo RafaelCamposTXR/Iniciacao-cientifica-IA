@@ -29,27 +29,27 @@ def summation(inputs, weights, bias):
 def store_neural_network_info(layers, inputs, hidden_outputs, output):
     network_info = {
         "inputs": inputs,
-        "hidden_layer_count": len(layers) - 1,
-        "hidden_layers": [],
-        "output_layer": {
-            "weights": layers[-1]['weights'],
-            "biases": layers[-1]['biases']
-        }
+        "layer_count": len(layers),
+        "layers": [],
+        "qtd_neuronios": []
     }
     
-    for i in range(len(layers) - 1):
+    for i, layer in enumerate(layers):
         layer_info = {
-            "weights": layers[i]['weights'],
-            "biases": layers[i]['biases']
+            "layer_number": i + 1,
+            "weights": layer['weights'],
+            "biases": layer['biases'],
+            "activation": layer['activation']
         }
-        network_info["hidden_layers"].append(layer_info)
+        network_info["layers"].append(layer_info)
+        network_info["qtd_neuronios"].append([i + 1, len(layer['weights'])])
     
     return network_info
 
 # Função para salvar informações da rede neural em um arquivo JSON
 def save_network_info_to_json(file_path, network_info):
     with open(file_path, 'w') as file:
-        json.dump(network_info, file)
+        json.dump(network_info, file, indent=4)
         print("Informações da rede salvas em", file_path)
 
 # Função para carregar informações da rede neural de um arquivo JSON

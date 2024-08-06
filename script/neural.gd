@@ -1,9 +1,6 @@
-extends Node 
+extends Node
 
-var inputs = [5.5, 2.5, 4.0, 1.3]  # Entradas da rede neural
-var network_info = {}  # Variável para armazenar informações da rede neural
-
-# Definir a função de ativação ReLU
+# Define a função de ativação ReLU
 func ReLU(inputs, weights, bias):
     var x = summation(inputs, weights, bias)
     for i in range(x.size()):
@@ -11,97 +8,98 @@ func ReLU(inputs, weights, bias):
             x[i] = 0
     return x
 
-# Definir a função de somatório
+# Função para retornar a função de ativação pelo nome
+func get_activation_function(name):
+    if name == "ReLU":
+        return ReLU
+    # Adicione outras funções de ativação aqui conforme necessário
+    push_error("Função de ativação desconhecida: " + name)
+    return null
+
+# Define a função de somatório
 func summation(inputs, weights, bias):
     var result = []
     for j in range(weights.size()):
-        var sum = 0
+        var summ = 0.0
         for i in range(inputs.size()):
-            sum += inputs[i] * weights[j][i]
-        result.append(sum + bias[j])
+            summ += inputs[i] * weights[j][i]
+        result.append(summ + bias[j])
     return result
 
-# Definir as camadas da rede neural
-var ann0 = [
-    [ # Camada oculta
-        [ # Pesos
-            [ 3.67544247e-01,  3.99710701e-01,  5.62482995e-01,  1.21584223e+00],
-            [ 7.33857775e-01,  1.63110209e+00, -1.62498659e+00, -1.09241287e+00],
-            [-4.90230015e-01,  2.77883485e-01,  5.40120978e-01,  3.42985490e-01],
-        ],
-        [ # Biases
-            -0.19923328, 2.29299105, -0.3737735,
-        ],
-        ReLU,  # Função de ativação ReLU
-    ],
-    [ # Camada de saída
-        [ # Pesos
-            [-1.44311522e+00, 1.60677038e+00, 4.31788186e-01],
-            [-3.02050927e-01, 3.20649974e-01, -5.42225471e-02],
-        ],
-        [ # Biases
-            0.16481194, 1.43615104,
-        ],
-        ReLU,  # Função de ativação ReLU
-    ],
-]
-
-# Função para armazenar as informações da rede neural
+# Função para armazenar informações da rede neural
 func store_neural_network_info(layers, inputs, hidden_outputs, output):
     var network_info = {
-        "inputs": inputs,  # Armazena as entradas da rede
-        "hidden_layer_count": layers.size() - 1,  # Conta o número de camadas ocultas
-        "hidden_layers": [],  # Lista vazia para armazenar informações das camadas ocultas
+        "inputs": inputs,
+        "hidden_layer_count": layers.size() - 1,
+        "hidden_layers": [],
         "output_layer": {
-            "weights": layers[-1][0],  # Pesos da camada de saída
-            "biases": layers[-1][1],   # Biases da camada de saída
-            "activation_function": layers[-1][2].to_string()  # Função de ativação da camada de saída
-        },
-        "output": output
+            "weights": layers[-1]["weights"],
+            "biases": layers[-1]["biases"]
+        }
     }
     
-    # Itera sobre as camadas ocultas para armazenar seus pesos, biases e funções de ativação
     for i in range(layers.size() - 1):
         var layer_info = {
-            "weights": layers[i][0],
-            "biases": layers[i][1],
-            "activation_function": layers[i][2].to_string()
+            "weights": layers[i]["weights"],
+            "biases": layers[i]["biases"]
         }
         network_info["hidden_layers"].append(layer_info)
     
     return network_info
 
-# Função para salvar as informações da rede neural em um arquivo JSON
-func save_network_info_to_json(file_path):
+# Função para salvar informações da rede neural em um arquivo JSON
+func save_network_info_to_json(file_path, network_info):
     var file = File.new()
     if file.open(file_path, File.WRITE) == OK:
-        file.store_string(JSON.print(network_info))  # Converte network_info para JSON e salva no arquivo
+        file.store_string(to_json(network_info))
         file.close()
-        print("Informações da rede salvas em ", file_path)
-    else:
-        print("Falha ao salvar informações da rede")
+        print("Informações da rede salvas em " + file_path)
 
-# Função para carregar as informações da rede neural de um arquivo JSON
+# Função para carregar informações da rede neural de um arquivo JSON
 func load_network_info_from_json(file_path):
     var file = File.new()
-    if file.open(file_path, File.READ) == OK:
-        var data = file.get_as_text()  # Lê o conteúdo do arquivo
-        network_info = JSON.parse(data).result  # Converte o JSON de volta para um dicionário em GDScript
+    if file.file_exists(file_path):
+        file.open(file_path, File.READ)
+        var data = parse_json(file.get_as_text())
         file.close()
-        print("Informações da rede carregadas de ", file_path)
-    else:
-        print("Falha ao carregar informações da rede")
+        print("Informações da rede carregadas de " + file_path)
+        return data
+    print("Falha ao carregar informações da rede")
+    return null
 
+# Função para processar os inputs através da rede
+func process_inputs_through_network(inputs, network):
+    var current_output = inputs
+    for layer in network:
+        var weights = layer["weights"]
+        var biases = layer["biases"]
+        var activation_function = get_activation_function(layer["activation"])
+        current_output = activation_function(current_output, weights, biases)
+    return current_output
+
+# Simula a função _ready() no Godot
 func _ready():
-    # Processa os inputs através da rede neural
-    var hidden_layer_output = ann0[0][2](inputs, ann0[0][0], ann0[0][1])
-    var output_layer_output = ann0[1][2](hidden_layer_output, ann0[1][0], ann0[1][1])
+    # Define os inputs conforme seu GDScript original
+    var inputs = [5.5, 2.5, 4.0, 1.3]
     
-    # Captura e armazena as informações da rede neural
-    network_info = store_neural_network_info(ann0, inputs, [hidden_layer_output], output_layer_output)
+    # Carrega as informações da rede de um arquivo JSON
+    var network_info = load_network_info_from_json("res://modelo_rede.json")
     
-    # Salva as informações da rede neural em um arquivo JSON
-    save_network_info_to_json("res://informacoes_rede.json")
-
-func get_network_info():
-    return network_info
+    if network_info:
+        # Carrega a rede neural do JSON
+        var network = network_info["layers"]
+        
+        # Processa os inputs através da rede
+        var hidden_layer_outputs = []
+        var current_output = inputs
+        for layer in network.slice(0, network.size() - 1):
+            current_output = process_inputs_through_network(current_output, [layer])
+            hidden_layer_outputs.append(current_output)
+        
+        var output_layer_output = process_inputs_through_network(current_output, [network[-1]])
+        
+        # Captura e armazena informações da rede neural
+        network_info = store_neural_network_info(network, inputs, hidden_layer_outputs, output_layer_output)
+        
+        # Salva informações da rede neural em um arquivo JSON
+        save_network_info_to_json("res://informacoes_rede.json", network_info)

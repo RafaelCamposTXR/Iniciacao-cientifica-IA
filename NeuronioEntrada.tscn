@@ -38,6 +38,7 @@ func _on_area_3d_mouse_entered():
 	text_edit.grab_focus()
 	infoNeuronio.visible = true
 
+
 func _on_area_3d_mouse_exited():
 	EscolheCor(ativado)
 	infoNeuronio.visible = false

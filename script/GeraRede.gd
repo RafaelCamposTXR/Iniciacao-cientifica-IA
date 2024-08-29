@@ -1,10 +1,10 @@
-distanciaCamada = 4;
-distanciaNeuronio = 4;
+distanciaCamada = 4
+distanciaNeuronio = 4
 
 
-GeraRede(rede): #Extrair json inteiro
-  x,y,z = 0;
-  for i in rede.tamanhoRede #Extrair tamanho da rede do json
+GeraRede(rede): 
+ x,y,z = 0;
+  for i in rede.tamanhoRede 
     GeraCamada(i)
 
 # GeraRede(rede):

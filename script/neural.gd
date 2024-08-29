@@ -34,7 +34,7 @@ func store_neural_network_info(layers: Array, inputs: Array, hidden_outputs: Arr
         "inputs": inputs,
         "layer_count": len(layers),
         "layers": [],
-        "qtd_neuronios": []
+        "num_neurons": []
     }
     
     for i in range(len(layers)):
@@ -46,7 +46,7 @@ func store_neural_network_info(layers: Array, inputs: Array, hidden_outputs: Arr
             "activation": layer['activation']
         }
         network_info["layers"].append(layer_info)
-        network_info["qtd_neuronios"].append([i + 1, len(layer['weights'])])
+        network_info["num_neurons"].append([i + 1, len(layer['weights'])])
     
     return network_info
 

@@ -217,4 +217,26 @@ func load_network_info_from_json(file_path):
 		print("Falha ao carregar informações da rede")
 	return network_info
 
+func somatorio_ponderado(entradas: Array, pesos: Array, bias: float) -> float:
+	var soma: float = 0.0
+	for i in range(len(entradas)):
+		soma += entradas[i] * pesos[i]
+	return soma + bias
 
+func funcao_de_ativacao(z: float) -> float:
+	return 1.0 / (1.0 + exp(-z))
+
+func calcular_ativacoes(rede_neural: Array, entradas_iniciais: Array) -> Array:
+	var ativacoes = []  # tentativa com lista de listas
+	var entradas = entradas_iniciais
+
+	for camada in rede_neural:
+		var ativacoes_camada = []
+		for neuronio in camada:
+			var z = somatorio_ponderado(entradas, neuronio["pesos"], neuronio["bias"])
+			var a = funcao_de_ativacao(z)
+			ativacoes_camada.append(a)
+		ativacoes.append(ativacoes_camada)
+		entradas = ativacoes_camada  # saídas da camada são entradas da próxima
+
+	return ativacoes

@@ -2,9 +2,9 @@ distanciaCamada = 4;
 distanciaNeuronio = 4;
 
 
-GeraRede(rede):
+GeraRede(rede): #Extrair json inteiro
   x,y,z = 0;
-  for i in rede.tamanhoRede 
+  for i in rede.tamanhoRede #Extrair tamanho da rede do json
     GeraCamada(i)
 
 # GeraRede(rede):
@@ -13,7 +13,7 @@ GeraRede(rede):
 # incrementa x
 
 
-GeraCamada(i):
+GeraCamada(i): #Extrair números de bias de uma camada específica
   GeraNeuroniosCamada(rede.i)
   if i > 0:
     ConectaLinhas(rede.i)
@@ -40,7 +40,7 @@ GeraNeuroniosCamada(camada):
 ConectaLinhas(camada):
   for i in camada:
     GeraConexão((x,y,z),(x0,y0,zo))
-    InserePeso()
+    InserePeso() #Extrair números de peso de uma camada em específico
 
 # Conecta linhas(x)
 # 	Para cada neurônio atual:

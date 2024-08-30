@@ -1,6 +1,7 @@
 extends Node3D
 
 
+
 ## Instanciamento de Neurônio ##
 var NovaCapsula = preload("res://Neuronio.tscn")
 var NovaLinha = preload("res://Linha.tscn")
@@ -110,19 +111,41 @@ func CriarNeuronioEntrada(posx, posy, posz, ativado, valor):
 ####
 
 func calcular_ativacoes(rede_neural: Array, entradas_iniciais: Array) -> Array:
-	var ativacoes = []  # tentativa com lista de listas
+	var ativacoes = []
 	var entradas = entradas_iniciais
 
 	for camada in rede_neural:
 		var ativacoes_camada = []
-		for neuronio in camada:
-			var z = somatorio_ponderado(entradas, neuronio["pesos"], neuronio["bias"])
-			var a = funcao_de_ativacao(z)
+		for i in range(len(camada["biases"])):
+			var z = somatorio_ponderado(entradas, camada["weights"][i], camada["biases"][i])
+			
+			# Obtendo a função de ativação específica do neurônio
+			var func_ativacao = get_funcao_ativacao(camada["activation"])
+			
+			# Calculando a ativação usando a função especificada
+			var a = func_ativacao(z)
 			ativacoes_camada.append(a)
+		
 		ativacoes.append(ativacoes_camada)
-		entradas = ativacoes_camada  # saídas da camada são entradas da próxima
-
+		entradas = ativacoes_camada  # Saídas da camada são entradas da próxima camada
+	
 	return ativacoes
+
+# Função auxiliar para obter a função de ativação correta
+func get_funcao_ativacao(nome_funcao: String) -> Callable:
+	match nome_funcao:
+		"ReLU":
+			return ReLU
+#		"sigmoid":
+#			return funcao_sigmoid
+#		"tanh":
+#			return funcao_tanh
+		_:
+			return funcao_default  # Função padrão caso o nome não corresponda a nenhuma função
+
+func funcao_default(z: float) -> float:
+	print("Função de ativação desconhecida usada, retornando valor original.")
+	return z
 
 
 #Criação de conexão
@@ -156,17 +179,11 @@ func _on_sair_button_down():
 
 
 # Definir a função de ativação ReLU
-func ReLU(inputs, weights, bias):
-	var result = []
-	for j in range(weights.size()):
-		var sum = 0
-		for i in range(inputs.size()):
-			sum += inputs[i] * weights[j][i]
-		result.append(sum + bias[j])
-	for i in range(result.size()):
-		if result[i] <= 0:
-			result[i] = 0
-	return result
+func ReLU(x):
+	if x <=0:
+		return 0
+	else: 
+		return x
 
 var ann0 = [
 	[ # Camada oculta

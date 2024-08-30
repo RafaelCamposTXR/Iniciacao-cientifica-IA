@@ -21,24 +21,20 @@ var y = 2
 
 func _ready():
 	
-	var data_to_send = ["a", "b", "c"]
-	var json_string = JSON.stringify(data_to_send)
-	
-# Save data
-# ...
-# Retrieve data
-	var json = JSON.new()
-	var error = json.parse(json_string)
-	if error == OK:
-		var data_received = json.data
-		if typeof(data_received) == TYPE_ARRAY:
-			print(data_received) # Prints array
-		else:
-			print("Unexpected data")
-	else:
-		print("JSON Parse Error: ", json.get_error_message(), " in ", json_string, " at line ", json.get_error_line())
-	
-	
+	var rede_neural = [
+	[
+		{"pesos": [0.5, -0.2], "bias": 0.1},
+		{"pesos": [0.3, 0.8], "bias": -0.4}
+	],
+	[
+		{"pesos": [0.7, 0.6], "bias": 0.2},
+		{"pesos": [-0.5, 0.9], "bias": 0.0}
+	]
+	]
+
+	var entradas_iniciais = [1.0, -1.0]
+
+	print("rede gerada = ", calcular_ativacoes(rede_neural, entradas_iniciais))
 	print(ReLU([0,1,1],[[3,2,2],[4,5,5],[5,3,3]],[5,4,3]))
 	
 	var hidden_layer_output = ann0[0][2].call(inputs, ann0[0][0], ann0[0][1])

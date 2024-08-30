@@ -21,6 +21,24 @@ var y = 2
 
 func _ready():
 	
+	var data_to_send = ["a", "b", "c"]
+	var json_string = JSON.stringify(data_to_send)
+	
+# Save data
+# ...
+# Retrieve data
+	var json = JSON.new()
+	var error = json.parse(json_string)
+	if error == OK:
+		var data_received = json.data
+		if typeof(data_received) == TYPE_ARRAY:
+			print(data_received) # Prints array
+		else:
+			print("Unexpected data")
+	else:
+		print("JSON Parse Error: ", json.get_error_message(), " in ", json_string, " at line ", json.get_error_line())
+	
+	
 	print(ReLU([0,1,1],[[3,2,2],[4,5,5],[5,3,3]],[5,4,3]))
 	
 	var hidden_layer_output = ann0[0][2].call(inputs, ann0[0][0], ann0[0][1])
@@ -95,6 +113,20 @@ func CriarNeuronioEntrada(posx, posy, posz, ativado, valor):
 	NeuronioEntrada.EscolheCor(ativado)
 ####
 
+func calcular_ativacoes(rede_neural: Array, entradas_iniciais: Array) -> Array:
+	var ativacoes = []  # tentativa com lista de listas
+	var entradas = entradas_iniciais
+
+	for camada in rede_neural:
+		var ativacoes_camada = []
+		for neuronio in camada:
+			var z = somatorio_ponderado(entradas, neuronio["pesos"], neuronio["bias"])
+			var a = funcao_de_ativacao(z)
+			ativacoes_camada.append(a)
+		ativacoes.append(ativacoes_camada)
+		entradas = ativacoes_camada  # saídas da camada são entradas da próxima
+
+	return ativacoes
 
 
 #Criação de conexão
@@ -226,17 +258,4 @@ func somatorio_ponderado(entradas: Array, pesos: Array, bias: float) -> float:
 func funcao_de_ativacao(z: float) -> float:
 	return 1.0 / (1.0 + exp(-z))
 
-func calcular_ativacoes(rede_neural: Array, entradas_iniciais: Array) -> Array:
-	var ativacoes = []  # tentativa com lista de listas
-	var entradas = entradas_iniciais
 
-	for camada in rede_neural:
-		var ativacoes_camada = []
-		for neuronio in camada:
-			var z = somatorio_ponderado(entradas, neuronio["pesos"], neuronio["bias"])
-			var a = funcao_de_ativacao(z)
-			ativacoes_camada.append(a)
-		ativacoes.append(ativacoes_camada)
-		entradas = ativacoes_camada  # saídas da camada são entradas da próxima
-
-	return ativacoes

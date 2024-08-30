@@ -8,6 +8,10 @@ func relu(inputs: Array, weights: Array, bias: Array) -> Array:
             x[i] = 0
     return x
 
+
+func _ready():
+  pass
+  
 # Função para retornar a função de ativação pelo nome
 func get_activation_function(name: String) -> Func:
     match name:
@@ -52,9 +56,11 @@ func store_neural_network_info(layers: Array, inputs: Array, hidden_outputs: Arr
 
 # Função para salvar informações da rede neural em um arquivo JSON
 func save_network_info_to_json(file_path: String, network_info: Dictionary) -> void:
-    var file = File.new()
+    var file = File.new()  
     if file.open(file_path, File.WRITE) == OK:
-        file.store_string(to_json(network_info))
+        file.store_string(JSON.stringify(network_info))
+        # to_json ==> JSON.stringify(json_string)
+        
         file.close()
         print("Informações da rede salvas em %s" % file_path)
     else:
@@ -65,7 +71,16 @@ func load_network_info_from_json(file_path: String) -> Dictionary:
     var file = File.new()
     var data = {}
     if file.open(file_path, File.READ) == OK:
-        data = parse_json(file.get_as_text())
+        var JsonData = file.get_as_text()
+        var json = JSON.new()
+        var error = json.parse(JsonData)
+        if error == OK:
+	        var data_received = json.data
+	        if typeof(data_received) == TYPE_ARRAY:
+		        print(data_received) # Prints array
+	        else:
+		        print("Unexpected data")
+        #parse_json ==> JSON.stringify(json_string) converte de string para json
         file.close()
         print("Informações da rede carregadas de %s" % file_path)
     else:
@@ -94,12 +109,12 @@ func all_elements_are_numbers(array: Array) -> bool:
 func all_elements_are_array_of_numbers(array: Array) -> bool:
     for subarray in array:
         if not subarray is Array or not all_elements_are_numbers(subarray):
-            return false
+          return false
     return true
 
 # Função para verificar se a função de ativação é suportada
 func is_activation_function_supported(name: String) -> bool:
-    return name == "ReLU"  # Adicione mais funções de ativação conforme necessário
+    return name == "ReLU" 
 
 # Função para validar o JSON da rede neural
 func validate_network_json(network_json: Dictionary) -> bool:

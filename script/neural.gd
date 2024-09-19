@@ -33,26 +33,18 @@ func summation(inputs: Array, weights: Array, bias: Array) -> Array:
     return result
 
 # Função para armazenar informações da rede neural
-func store_neural_network_info(layers: Array, inputs: Array, hidden_outputs: Array, output: Array) -> Dictionary:
-    var network_info = {
-        "inputs": inputs,
-        "layer_count": len(layers),
-        "layers": [],
-        "num_neurons": []
-    }
+func store_neural_network_info(layers: Array, inputs: Array, hidden_outputs: Array, output: Array) -> Array:
+    var network_info = []
     
     for i in range(len(layers)):
         var layer = layers[i]
-        var layer_info = {
-            "layer_number": i + 1,
-            "weights": layer['weights'],
-            "biases": layer['biases'],
-            "activation": layer['activation']
-        }
-        network_info["layers"].append(layer_info)
-        network_info["num_neurons"].append([i + 1, len(layer['weights'])])
+        var layer_data = layer[1]  # Agora acessa os dados da camada
+        var layer_info = ["camada%d" % (i + 1), 
+                          ["pesos", layer_data[1], "biases", layer_data[3], "ativacao", layer_data[5]]]
+        network_info.append(layer_info)
     
     return network_info
+
 
 # Função para salvar informações da rede neural em um arquivo JSON
 func save_network_info_to_json(file_path: String, network_info: Dictionary) -> void:
@@ -91,12 +83,17 @@ func load_network_info_from_json(file_path: String) -> Dictionary:
 func process_inputs_through_network(inputs: Array, network: Array) -> Array:
     var current_output = inputs
     for layer in network:
-        var weights = layer['weights']
-        var biases = layer['biases']
-        var activation_function = get_activation_function(layer['activation'])
+        # Acessa pesos, biases e função de ativação no novo formato
+        var layer_data = layer[1]
+        var weights = layer_data[1]  # Índice 1 agora se refere aos pesos
+        var biases = layer_data[3]   # Índice 3 se refere aos biases
+        var activation_function_name = layer_data[5]  # Índice 5 se refere à função de ativação
+        
+        var activation_function = get_activation_function(activation_function_name)
         if activation_function != null:
             current_output = activation_function(current_output, weights, biases)
     return current_output
+
 
 # Função auxiliar para verificar se todos os elementos de uma Array são números
 func all_elements_are_numbers(array: Array) -> bool:
@@ -117,59 +114,37 @@ func is_activation_function_supported(name: String) -> bool:
     return name == "ReLU" 
 
 # Função para validar o JSON da rede neural
-func validate_network_json(network_json: Dictionary) -> bool:
-    var required_keys = ["inputs", "layers"]
-
-    # Verifica se todas as chaves obrigatórias estão presentes
-    for key in required_keys:
-        if not network_json.has(key):
-            push_error("Chave obrigatória '%s' ausente no JSON." % key)
-            return false
-
-    # Verifica se 'inputs' é uma Array de números
-    if not network_json["inputs"] is Array or not all_elements_are_numbers(network_json["inputs"]):
-        push_error("A chave 'inputs' deve ser uma Array de números.")
+func validate_network_json(network_json: Array) -> bool:
+    # Verifica se a rede possui camadas
+    if network_json.size() == 0:
+        push_error("A rede neural não contém camadas.")
         return false
-
-    # Verifica se 'layers' é uma Array de camadas
-    if not network_json["layers"] is Array or network_json["layers"].size() == 0:
-        push_error("A chave 'layers' deve ser uma Array de camadas.")
-        return false
-
-    # Verifica cada camada na lista 'layers'
-    for i in range(network_json["layers"].size()):
-        var layer = network_json["layers"][i]
-        if not layer is Dictionary:
-            push_error("A camada %d não é um objeto válido." % (i + 1))
+    
+    # Verifica cada camada
+    for i in range(network_json.size()):
+        var layer = network_json[i]
+        if not layer is Array or layer.size() < 2:
+            push_error("Formato de camada inválido na camada %d." % (i + 1))
             return false
         
-        # Verifica se as chaves obrigatórias estão presentes em cada camada
-        var layer_required_keys = ["weights", "biases", "activation"]
-        for key in layer_required_keys:
-            if not layer.has(key):
-                push_error("Chave obrigatória '%s' ausente na camada %d." % [key, (i + 1)])
-                return false
-        
-        # Verifica se 'weights' é uma Array de Arrays de números
-        if not layer["weights"] is Array or not all_elements_are_array_of_numbers(layer["weights"]):
-            push_error("'weights' na camada %d deve ser uma Array de Arrays de números." % (i + 1))
+        var layer_data = layer[1]
+        # Verifica a estrutura da camada: pesos, biases, ativação
+        if not (layer_data[1] is Array and all_elements_are_array_of_numbers(layer_data[1])):
+            push_error("'pesos' na camada %d deve ser uma Array de Arrays de números." % (i + 1))
             return false
         
-        # Verifica se 'biases' é uma Array de números
-        if not layer["biases"] is Array or not all_elements_are_numbers(layer["biases"]):
+        if not (layer_data[3] is Array and all_elements_are_numbers(layer_data[3])):
             push_error("'biases' na camada %d deve ser uma Array de números." % (i + 1))
             return false
         
-        # Verifica se 'activation' é uma string
-        if not layer["activation"] is String:
-            push_error("'activation' na camada %d deve ser uma string." % (i + 1))
+        if not layer_data[5] is String:
+            push_error("'ativacao' na camada %d deve ser uma string." % (i + 1))
             return false
         
-        # Verifica se a função de ativação é suportada
-        if not is_activation_function_supported(layer["activation"]):
-            push_error("Função de ativação '%s' na camada %d não é suportada." % [layer["activation"], (i + 1)])
+        if not is_activation_function_supported(layer_data[5]):
+            push_error("Função de ativação '%s' na camada %d não é suportada." % [layer_data[5], (i + 1)])
             return false
-
+    
     print("JSON de entrada válido.")
     return true
 

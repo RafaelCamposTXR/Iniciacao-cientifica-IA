@@ -14,3 +14,7 @@ config/name="RNA_Visualizador"
 run/main_scene="res://MenuPrincipal.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
 config/icon="res://icon.svg"
+
+[autoload]
+
+GlobalRede="*res://global_rede.gd"

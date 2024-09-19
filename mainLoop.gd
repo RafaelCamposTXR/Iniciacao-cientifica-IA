@@ -2,6 +2,7 @@ extends Node3D
 
 
 
+
 ## Instanciamento de Neurônio ##
 var NovaCapsula = preload("res://Neuronio.tscn")
 var NovaLinha = preload("res://Linha.tscn")
@@ -21,157 +22,24 @@ var y = 2
 
 
 func _ready():
-	
-	# JSON string definida
-	var json_string = """
-	{
-		"layers": [
-		{
-		"weights": [
-			[0.367544247, 0.399710701, 0.562482995, 1.21584223],
-			[0.733857775, 1.63110209, -1.62498659, -1.09241287],
-			[-0.490230015, 0.277883485, 0.540120978, 0.34298549]
-		],
-		"biases": [-0.19923328, 2.29299105, -0.3737735],
-		"activation": "ReLU"
-		},
-		{
-		"weights": [
-			[-1.44311522, 1.60677038, 0.431788186],
-			[-0.302050927, 0.320649974, -0.0542225471]
-		],
-		"biases": [0.16481194, 1.43615104],
-		"activation": "ReLU"
-		}
-	]
-	}
-	"""
-	
-	# Parse o JSON para um dicionário
+	var rede = GlobalRede.file
 	var json = JSON.new()
-	#var rede_neural = json.parse(json_string)
+	var error = json.parse(rede)
 	
-	
-	var rede_neural_dict = {
-		"layers": [
-			{
-				"weights": [
-					[0.367544247, 0.399710701, 0.562482995, 1.21584223],
-					[0.733857775, 1.63110209, -1.62498659, -1.09241287],
-					[-0.490230015, 0.277883485, 0.540120978, 0.34298549]
-				],
-				"biases": [-0.19923328, 2.29299105, -0.3737735],
-				"activation": "ReLU"
-			},
-			{
-				"weights": [
-					[-1.44311522, 1.60677038, 0.431788186],
-					[-0.302050927, 0.320649974, -0.0542225471]
-				],
-				"biases": [0.16481194, 1.43615104],
-				"activation": "ReLU"
-			}
-		]
-	}
-	
-	var rede_neural_array = [
-  [
-	[[0.367544247, 0.399710701, 0.562482995, 1.21584223]],  # weights da primeira camada
-	[-0.19923328, 2.29299105, -0.3737735],  # biases da primeira camada
-	"ReLU"  # activation da primeira camada
-  ],
-  [
-	[[-1.44311522, 1.60677038, 0.431788186]],  # weights da segunda camada
-	[0.16481194, 1.43615104],  # biases da segunda camada
-	"ReLU"  # activation da segunda camada
-  ]
-]
-	
-	var entradas_iniciais = [1.0, -1.0]
-	print(calcular_ativacoes(rede_neural_array,entradas_iniciais))
-	# Verifique se o dicionário tem a chave 'layers'
-	#if rede_neural_dados.has("layers"):
-		#var camadas = rede_neural_dados["layers"]
-		#
-		## Iterar sobre as camadas e acessar os valores com segurança
-		#for camada in camadas:
-			#if camada.has("weights") and camada.has("biases") and camada.has("activation"):
-				#var pesos = camada["weights"]
-				#var biases = camada["biases"]
-				#var ativacao = camada["activation"]
-				#
-				#print("Pesos: ", pesos)
-				#print("Biases: ", biases)
-				#print("Função de Ativação: ", ativacao)
-			#else:
-				#print("Erro: Camada não contém todos os dados necessários.")
-	#else:
-		#print("Erro: Dicionário não contém a chave 'layers'.")
-	#if rede_neural.error == OK:
-		#var dados = rede_neural.result  
-		#var camadas = dados["layers"] 
-		#
-
-		#for camada in camadas:
-			#var ativacao = camada["activation"]
-			#print("Função de ativação da camada:", ativacao)
-	#else:
-		#print("Erro ao parsear JSON: ", rede_neural.error_string)
-
+	print(calcular_ativacoes(json.data, [0,1,0,0]))
 	
 
-	#print("rede gerada = ", calcular_ativacoes(rede_neural, entradas_iniciais))
-	#print(ReLU(1))
-	
-	#var hidden_layer_output = ann0[0][2].call(inputs, ann0[0][0], ann0[0][1])
-	#var output_layer_output = ann0[1][2].call(hidden_layer_output, ann0[1][0], ann0[1][1])
-	#
-	# Captura e armazena as informações da rede neural
-	#network_info = store_neural_network_info(ann0, inputs, [hidden_layer_output], output_layer_output)
-	#
-	## Salva as informações da rede neural em um arquivo JSON
-	#save_network_info_to_json("res://informacoes_rede.json", network_info)
-
-
-	CriarLinha(Vector3(-2,2,0), Vector3(2,4,0))
+	#CriarLinha(Vector3(-2,2,0), Vector3(2,4,0))
 	
 	##Neuronio De Entrada de Teste
-	CriarNeuronioEntrada(-2,2,0,0,7)
-	CriarNeuronioEntrada(-2,0,0,0,7)
-	CriarNeuronioEntrada(-2,2,-2,0,7)
-	CriarNeuronioEntrada(-2,0,-2,0,7)
-	CriarNeuronioEntrada(-2,2,-4,0,7)
-	CriarNeuronioEntrada(-2,0,-4,0,7)
-	####
-	
-	##Neuronios de Teste
-	CriarNeuronio(2,4,0,1,5.6)
-	CriarNeuronio(0,2,0,1,5.6)
-	CriarNeuronio(2,2,0,0,10.3)
-	CriarNeuronio(4,2,0,1,5)
-	
-	CriarNeuronio(0,0,0,0,5.6)
-	CriarNeuronio(2,0,0,0,10.3)
-	CriarNeuronio(4,0,0,1,5)
-	
-	CriarNeuronio(2,4,-4,1,5.6)
-	CriarNeuronio(0,2,-4,1,5.6)
-	CriarNeuronio(2,2,-4,0,10.3)
-	CriarNeuronio(4,2,-4,1,5)
-	
-	CriarNeuronio(0,0,-4,0,5.6)
-	CriarNeuronio(2,0,-4,0,10.3)
-	CriarNeuronio(4,0,-4,1,5)
-	
-	CriarNeuronio(2,4,-2,1,5.6)
-	CriarNeuronio(0,2,-2,1,5.6)
-	CriarNeuronio(2,2,-2,0,10.3)
-	CriarNeuronio(4,2,-2,1,5)
-	
-	CriarNeuronio(0,0,-2,0,5.6)
-	CriarNeuronio(2,0,-2,0,10.3)
-	CriarNeuronio(4,0,-2,1,5)
-	####
+	#CriarNeuronioEntrada(-2,2,0,0,7)
+	#CriarNeuronioEntrada(-2,0,0,0,7)
+	#CriarNeuronioEntrada(-2,2,-2,0,7)
+	#CriarNeuronioEntrada(-2,0,-2,0,7)
+	#CriarNeuronioEntrada(-2,2,-4,0,7)
+	#CriarNeuronioEntrada(-2,0,-4,0,7)
+	#####
+	#
 
 
 func _process(delta):
@@ -180,10 +48,15 @@ func _process(delta):
 
 ## Criação de Neurônio ##
 func CriarNeuronio(posx, posy, posz, ativado, bias):
+	var cor
 	instanciasCapsula.append(NovaCapsula.instantiate())
 	add_child(instanciasCapsula[qtdCAP])
 	instanciasCapsula[qtdCAP].position = Vector3(posx,posy,posz)
-	instanciasCapsula[qtdCAP].EscolheCor(ativado)
+	if ativado > 0:
+		cor = 1
+	else:
+		cor = 0
+	instanciasCapsula[qtdCAP].EscolheCor(cor)
 	instanciasCapsula[qtdCAP].bias = bias
 	qtdCAP += 1
 	return instanciasCapsula[qtdCAP-1]
@@ -195,37 +68,66 @@ func CriarNeuronioEntrada(posx, posy, posz, ativado, valor):
 	NeuronioEntrada.EscolheCor(ativado)
 ####
 
-func calcular_ativacoes(rede_neural: Array, entradas_iniciais: Array) -> Array:
+func calcular_ativacoes(rede_neural, entradas_iniciais):
+	var posx = 0
+	var posy = 0
+	var posz = 0
+	
 	var ativacoes = []
 	var entradas = entradas_iniciais
 
+	# Itera sobre as camadas da rede (lista de listas)
 	for camada in rede_neural:
+		posy +=2
 		var ativacoes_camada = []
-		var pesos = camada[0]  # Acessa os pesos da camada
-		var biases = camada[1]  # Acessa os biases da camada
-		var ativacao_nome = camada[2]  # Acessa o nome da função de ativação
-		
+		var nome_camada = camada[0]  # Nome da camada (por exemplo, "camada1", "camada2")
+		var parametros = camada[1]  # Acessa pesos, biases e ativação
+
+		# Inicializa as variáveis de pesos, biases e função de ativação
+		var pesos = []
+		var biases = []
+		var ativacao_nome = ""
+
+		# Itera sobre os pares chave-valor (pesos, biases, ativacao)
+		for i in range(0, len(parametros), 2):
+			var chave = parametros[i]
+			var valor = parametros[i + 1]
+
+			if chave == "pesos":
+				pesos = valor  # Define os pesos
+			elif chave == "biases":
+				biases = valor  # Define os biases
+			elif chave == "ativacao":
+				ativacao_nome = valor  # Define o nome da função de ativação
+
 		# Obtém a função de ativação com base no nome
 		var func_ativacao = get_funcao_ativacao(ativacao_nome)
-		
+
+		# Calcula as ativações para cada neurônio na camada
 		for i in range(len(biases)):
-			if i >= pesos.size():
-				push_error("Erro: O índice do bias é maior que o tamanho da matriz de pesos.")
-				continue
+			if i >= len(pesos):
+				print("Erro: O índice do bias é maior que o tamanho da matriz de pesos.")
 			
-			# Certifique-se de que o tamanho das entradas corresponde ao número de pesos
-			if entradas.size() != pesos[i].size():
-				push_error("Erro: O tamanho das entradas não corresponde ao número de pesos.")
-				continue
-			
+			if len(entradas) != len(pesos[i]):
+				print("Erro: O tamanho das entradas não corresponde ao número de pesos.")
+
+			# Somatório ponderado (z = w*x + b)
 			var z = somatorio_ponderado(entradas, pesos[i], biases[i])
-			var a = func_ativacao.call([z])  # Chama a função de ativação usando call()
+
+			# Aplica a função de ativação
+			var a = func_ativacao.call([z]) 
+			CriarNeuronio(posx,posy,posz,a,5.6)
+			posx += 1.5
 			ativacoes_camada.append(a)
-		
+
+		# Armazena as ativações da camada
 		ativacoes.append(ativacoes_camada)
-		entradas = ativacoes_camada  # Saídas da camada são entradas da próxima camada
-	
+		# As ativações desta camada se tornam as entradas da próxima camada
+		entradas = ativacoes_camada
+
 	return ativacoes
+
+
 
 # Função fictícia para somatório ponderado
 func somatorio_ponderado(entradas, pesos, bias):
@@ -297,10 +199,11 @@ func _on_sair_button_down():
 
 # Definir a função de ativação ReLU
 func ReLU(x):
-	if x <=0:
+	print("o array de x é: ", x)
+	if x[0] <= 0:
 		return 0
 	else: 
-		return x
+		return x[0]
 
 var ann0 = [
 	[ # Camada oculta
